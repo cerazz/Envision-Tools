@@ -26,21 +26,194 @@ data class PoiEntry(
     val name: String
 )
 
-data class CalibrationData(val raw: ByteArray) {
-    override fun equals(other: Any?): Boolean =
-        other is CalibrationData && raw.contentEquals(other.raw)
-
-    override fun hashCode(): Int = raw.contentHashCode()
+/**
+ * Fully parsed calibration response (mirrors Python parse_calibration_response).
+ * Payload layout (98 bytes):
+ * [0]     uint8  success
+ * [1..4]  uint32 calibration_date (unix epoch, LE)
+ * [5]     uint8  calib_flags  (bits: gyro=0, accel=1, mag1=2, mag2=3, mag3=4, tempComp=5)
+ * [6..17]  float[3] gyro_offset
+ * [18..29] float[3] accel_offset
+ * [30..41] float[3] accel_scale
+ * [42..53] float[3] mag1_hard_iron
+ * [54..65] float[3] mag2_hard_iron
+ * [66..77] float[3] mag3_hard_iron
+ * [78..81] float imu_to_optical_pitch_deg
+ * [82..85] float imu_to_optical_yaw_deg
+ * [86..87] int16 display_x_offset
+ * [88..89] int16 display_y_offset
+ * [90..93] float display_zoom
+ * [94..97] float display_tilt
+ */
+data class CalibrationData(
+    val success: Boolean,
+    val calibrationDate: Long,         // unix timestamp; 0 = not set
+    val gyroCalibrated: Boolean,
+    val accelCalibrated: Boolean,
+    val mag1Calibrated: Boolean,
+    val mag2Calibrated: Boolean,
+    val mag3Calibrated: Boolean,
+    val tempCompEnabled: Boolean,
+    val gyroOffset: FloatArray,        // [x, y, z]
+    val accelOffset: FloatArray,
+    val accelScale: FloatArray,
+    val mag1HardIron: FloatArray,
+    val mag2HardIron: FloatArray,
+    val mag3HardIron: FloatArray,
+    val imuToOpticalPitchDeg: Float,
+    val imuToOpticalYawDeg: Float,
+    val displayXOffset: Short,
+    val displayYOffset: Short,
+    val displayZoom: Float,
+    val displayTilt: Float
+) {
+    companion object {
+        fun parse(payload: ByteArray): CalibrationData? {
+            if (payload.size < 98) return null
+            val buf = ByteBuffer.wrap(payload).order(ByteOrder.LITTLE_ENDIAN)
+            val success   = buf.get().toInt() and 0xFF
+            val calDate   = buf.int.toLong() and 0xFFFFFFFFL
+            val flags     = buf.get().toInt() and 0xFF
+            val gyroOff   = FloatArray(3) { buf.float }
+            val accelOff  = FloatArray(3) { buf.float }
+            val accelSca  = FloatArray(3) { buf.float }
+            val mag1      = FloatArray(3) { buf.float }
+            val mag2      = FloatArray(3) { buf.float }
+            val mag3      = FloatArray(3) { buf.float }
+            val pitch     = buf.float
+            val yaw       = buf.float
+            val dxOff     = buf.short
+            val dyOff     = buf.short
+            val zoom      = buf.float
+            val tilt      = buf.float
+            return CalibrationData(
+                success            = success != 0,
+                calibrationDate    = calDate,
+                gyroCalibrated     = (flags and 0x01) != 0,
+                accelCalibrated    = (flags and 0x02) != 0,
+                mag1Calibrated     = (flags and 0x04) != 0,
+                mag2Calibrated     = (flags and 0x08) != 0,
+                mag3Calibrated     = (flags and 0x10) != 0,
+                tempCompEnabled    = (flags and 0x20) != 0,
+                gyroOffset         = gyroOff,
+                accelOffset        = accelOff,
+                accelScale         = accelSca,
+                mag1HardIron       = mag1,
+                mag2HardIron       = mag2,
+                mag3HardIron       = mag3,
+                imuToOpticalPitchDeg = pitch,
+                imuToOpticalYawDeg   = yaw,
+                displayXOffset     = dxOff,
+                displayYOffset     = dyOff,
+                displayZoom        = zoom,
+                displayTilt        = tilt
+            )
+        }
+    }
+    override fun equals(other: Any?): Boolean = other is CalibrationData &&
+        success == other.success && calibrationDate == other.calibrationDate
+    override fun hashCode(): Int = calibrationDate.hashCode()
 }
 
+/**
+ * Fully parsed user configuration (mirrors Python parse_user_config_response).
+ * Payload layout (68 bytes):
+ * [0]      uint8  success
+ * [1]      uint8  brightness
+ * [2]      uint8  auto_brightness
+ * [3]      uint8  screen_timeout
+ * [4]      uint8  orientation
+ * [5..12]  double home_latitude  (LE)
+ * [13..20] double home_longitude (LE)
+ * [21..24] float  home_altitude
+ * [25..26] int16  timezone_offset (minutes from UTC)
+ * [27]     uint8  language
+ * [28]     uint8  date_format
+ * [29]     uint8  coordinate_format
+ * [30]     uint8  temperature_unit  (0=°C, 1=°F)
+ * [31]     uint8  show_constellation_lines
+ * [32]     uint8  show_constellation_names
+ * [33]     uint8  show_deep_sky_objects
+ * [34]     uint8  show_planets
+ * [35]     uint8  magnitude_limit
+ * [36..67] char[32] device_name  (null-terminated UTF-8)
+ */
 data class UserConfigData(
-    val raw: ByteArray,
-    val deviceName: String
+    val success: Boolean,
+    val deviceName: String,
+    val brightness: Int,
+    val autoBrightness: Boolean,
+    val screenTimeout: Int,          // seconds
+    val orientation: Int,
+    val homeLatitude: Double,
+    val homeLongitude: Double,
+    val homeAltitude: Float,
+    val timezoneOffsetMinutes: Short, // offset in minutes from UTC
+    val language: Int,
+    val dateFormat: Int,
+    val coordinateFormat: Int,
+    val temperatureUnit: Int,         // 0 = °C, 1 = °F
+    val showConstellationLines: Boolean,
+    val showConstellationNames: Boolean,
+    val showDeepSkyObjects: Boolean,
+    val showPlanets: Boolean,
+    val magnitudeLimit: Int
 ) {
-    override fun equals(other: Any?): Boolean =
-        other is UserConfigData && raw.contentEquals(other.raw)
+    val timezoneHours: Int get() = timezoneOffsetMinutes / 60
+    val timezoneMinutes: Int get() = Math.abs(timezoneOffsetMinutes.toInt()) % 60
+    val timezoneLabel: String get() =
+        "UTC${if (timezoneHours >= 0) "+" else ""}$timezoneHours:${"%02d".format(timezoneMinutes)}"
 
-    override fun hashCode(): Int = raw.contentHashCode()
+    companion object {
+        fun parse(payload: ByteArray): UserConfigData? {
+            if (payload.size < 68) return null
+            val buf = ByteBuffer.wrap(payload).order(ByteOrder.LITTLE_ENDIAN)
+            val success    = (buf.get().toInt() and 0xFF) != 0
+            val brightness = buf.get().toInt() and 0xFF
+            val autoBr     = (buf.get().toInt() and 0xFF) != 0
+            val timeout    = buf.get().toInt() and 0xFF
+            val orient     = buf.get().toInt() and 0xFF
+            val lat        = buf.double
+            val lon        = buf.double
+            val alt        = buf.float
+            val tzOffset   = buf.short
+            val lang       = buf.get().toInt() and 0xFF
+            val dateFmt    = buf.get().toInt() and 0xFF
+            val coordFmt   = buf.get().toInt() and 0xFF
+            val tempUnit   = buf.get().toInt() and 0xFF
+            val constLines = (buf.get().toInt() and 0xFF) != 0
+            val constNames = (buf.get().toInt() and 0xFF) != 0
+            val deepSky    = (buf.get().toInt() and 0xFF) != 0
+            val planets    = (buf.get().toInt() and 0xFF) != 0
+            val magLim     = buf.get().toInt() and 0xFF
+            val nameBytes  = ByteArray(32).also { buf.get(it) }
+            val nameEnd    = nameBytes.indexOfFirst { it == 0.toByte() }.takeIf { it >= 0 } ?: 32
+            val deviceName = String(nameBytes, 0, nameEnd, Charsets.UTF_8)
+            return UserConfigData(
+                success = success,
+                deviceName = deviceName,
+                brightness = brightness,
+                autoBrightness = autoBr,
+                screenTimeout = timeout,
+                orientation = orient,
+                homeLatitude = lat,
+                homeLongitude = lon,
+                homeAltitude = alt,
+                timezoneOffsetMinutes = tzOffset,
+                language = lang,
+                dateFormat = dateFmt,
+                coordinateFormat = coordFmt,
+                temperatureUnit = tempUnit,
+                showConstellationLines = constLines,
+                showConstellationNames = constNames,
+                showDeepSkyObjects = deepSky,
+                showPlanets = planets,
+                magnitudeLimit = magLim
+            )
+        }
+    }
+    override fun equals(other: Any?): Boolean = other is UserConfigData && deviceName == other.deviceName
+    override fun hashCode(): Int = deviceName.hashCode()
 }
 
 data class WmmFieldData(
@@ -49,7 +222,14 @@ data class WmmFieldData(
     val east: Float,
     val down: Float,
     val magnitude: Float
-)
+) {
+    val horizontalIntensity: Float get() =
+        Math.sqrt((north * north + east * east).toDouble()).toFloat()
+    val inclinationDeg: Float get() =
+        Math.toDegrees(-Math.atan2(down.toDouble(), horizontalIntensity.toDouble())).toFloat()
+    val declinationDeg: Float get() =
+        Math.toDegrees(Math.atan2(east.toDouble(), north.toDouble())).toFloat()
+}
 
 data class FileEntry(
     val size: Long,
@@ -114,7 +294,6 @@ suspend fun sendLandscape(
     manager: EnvisionBleManager,
     onProgress: (Int, Int) -> Unit
 ) {
-    sendFlush(manager)
     for ((index, line) in lines.withIndex()) {
         val pointCount = line.points.size
         // Descriptor: struct.pack('<hhBffI', 0, lineIndex, 4, azMin, azMax, pointCount)
@@ -143,7 +322,7 @@ suspend fun sendLandscape(
             }.array()
             val coordPayload = leBuffer(4 + rawPoints.size)
                 .putShort(line.lineIndex.toShort())
-                .putShort(chunkIndex.toShort())
+                .putShort(chunkPoints.size.toShort())
                 .put(rawPoints)
                 .array()
             manager.sendFrame(EnvisionProtocol.buildTlvFrame(EnvisionProtocol.MSG_CMD_COORD, coordPayload))
@@ -152,7 +331,6 @@ suspend fun sendLandscape(
         }
         onProgress(index + 1, lines.size)
     }
-    sendFlushEnd(manager)
 }
 
 /**
@@ -164,7 +342,6 @@ suspend fun sendPoi(
     manager: EnvisionBleManager,
     onProgress: (Int, Int) -> Unit
 ) {
-    sendFlush(manager)
     for ((index, poi) in pois.withIndex()) {
         val nameBytes = poi.name.toByteArray(Charsets.UTF_8)
         // struct.pack('<Bfffff', sectorIndex, azimut, altitude, importance, elevation, distance)
@@ -180,7 +357,6 @@ suspend fun sendPoi(
         manager.sendFrame(EnvisionProtocol.buildTlvFrame(EnvisionProtocol.MSG_CMD_POI, payload))
         onProgress(index + 1, pois.size)
     }
-    sendFlushEnd(manager)
 }
 
 /** Request device brightness. Returns the uint16 value or null on timeout. */
@@ -191,24 +367,19 @@ suspend fun getBrightness(manager: EnvisionBleManager): Int? {
     return (payload[0].toInt() and 0xFF) or ((payload[1].toInt() and 0xFF) shl 8)
 }
 
-/** Request calibration data (98 bytes). Returns null on timeout or bad response. */
+/** Request calibration data (98 bytes). Returns fully parsed CalibrationData or null on timeout/error. */
 suspend fun getCalibration(manager: EnvisionBleManager): CalibrationData? {
     manager.sendFrame(EnvisionProtocol.buildTlvFrame(EnvisionProtocol.MSG_GET_CALIBRATION, ByteArray(0)))
     val payload = manager.receiveResponse(EnvisionProtocol.MSG_GET_CALIBRATION_RESP) ?: return null
-    if (payload.size < 98) return null
-    return CalibrationData(payload)
+    return CalibrationData.parse(payload)
 }
 
 /** Request user configuration (68 bytes, includes device_name[32] at offset 36). */
+/** Request user configuration (68 bytes). Returns fully parsed UserConfigData or null on timeout/error. */
 suspend fun getUserConfig(manager: EnvisionBleManager): UserConfigData? {
     manager.sendFrame(EnvisionProtocol.buildTlvFrame(EnvisionProtocol.MSG_GET_USER_CONFIG, ByteArray(0)))
     val payload = manager.receiveResponse(EnvisionProtocol.MSG_GET_USER_CONFIG_RESP) ?: return null
-    if (payload.size < 68) return null
-    val nameBytes = payload.copyOfRange(36, 68)
-    var nameEnd = 0
-    while (nameEnd < nameBytes.size && nameBytes[nameEnd] != 0.toByte()) nameEnd++
-    val deviceName = String(nameBytes, 0, nameEnd, Charsets.UTF_8)
-    return UserConfigData(payload, deviceName)
+    return UserConfigData.parse(payload)
 }
 
 /** Request WMM field data. Returns null on timeout or failed status. */

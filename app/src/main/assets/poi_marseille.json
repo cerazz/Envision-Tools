@@ -1,0 +1,1972 @@
+[
+  {
+    "altitude" : 0.01830908,
+    "azimut" : 0.36201948,
+    "dbid" : -34521,
+    "distance" : 12233,
+    "elevation" : 250,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Fenêtre de Château Gombert",
+      "name:oc" : "Fenestron de Castèu Gombèrt",
+      "osm_id" : "9505730001"
+    },
+    "name" : "Fenêtre de Château Gombert",
+    "sectorIndex" : 1,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.04376869,
+    "azimut" : 0.25310683,
+    "dbid" : -34226,
+    "distance" : 14065,
+    "elevation" : 646,
+    "importance" : 0.83267325,
+    "keyvalues" : {
+      "demele" : "651",
+      "ele" : "652",
+      "name" : "L'Étoile",
+      "name:oc" : "L'Estèu",
+      "osm_id" : "443317598",
+      "prominence" : "96",
+      "wikidata" : "Q132731896"
+    },
+    "name" : "L'Étoile",
+    "sectorIndex" : 1,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.038973216,
+    "azimut" : 0.31753403,
+    "dbid" : -34170,
+    "distance" : 15054,
+    "elevation" : 618,
+    "importance" : 0.80495054,
+    "keyvalues" : {
+      "demele" : "622",
+      "ele" : "623",
+      "name" : "Luminier",
+      "osm_id" : "9505730284",
+      "prominence" : "40"
+    },
+    "name" : "Luminier",
+    "sectorIndex" : 1,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.03970481,
+    "azimut" : 0.34821364,
+    "dbid" : -34057,
+    "distance" : 16186,
+    "elevation" : 677,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "668",
+      "ele" : "710",
+      "name" : "Pilon du Roi",
+      "name:oc" : "Lo Pielon dau Rore",
+      "osm_id" : "7175239973"
+    },
+    "name" : "Pilon du Roi",
+    "sectorIndex" : 1,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.03478488,
+    "azimut" : 0.34974763,
+    "dbid" : -34171,
+    "distance" : 14397,
+    "elevation" : 531,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "518",
+      "ele" : "543",
+      "name" : "Tête du Jacquot",
+      "osm_id" : "9505730285"
+    },
+    "name" : "Tête du Jacquot",
+    "sectorIndex" : 1,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.02196717,
+    "azimut" : 0.11466506,
+    "dbid" : -34663,
+    "distance" : 10514,
+    "elevation" : 255,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Fenêtre du Vallon d’Ol",
+      "name:oc" : "Fenèstra dau Valon d’Òl",
+      "osm_id" : "9505729985"
+    },
+    "name" : "Fenêtre du Vallon d’Ol",
+    "sectorIndex" : 0,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.023027677,
+    "azimut" : 0.17487381,
+    "dbid" : -34815,
+    "distance" : 10898,
+    "elevation" : 276,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Baume Loubière",
+      "name:oc" : "Bauma Lobiera",
+      "osm_id" : "3307852325",
+      "wikidata" : "Q22683525",
+      "wikipedia" : "fr:Baume Loubière"
+    },
+    "name" : "Baume Loubière",
+    "sectorIndex" : 0,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.02799155,
+    "azimut" : 0.01917476,
+    "dbid" : -34055,
+    "distance" : 14072,
+    "elevation" : 424,
+    "importance" : 0.809901,
+    "keyvalues" : {
+      "demele" : "419",
+      "ele" : "422",
+      "name" : "Collet Redon",
+      "osm_id" : "9505729984",
+      "prominence" : "50"
+    },
+    "name" : "Collet Redon",
+    "sectorIndex" : 0,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.037191123,
+    "azimut" : 0.07324758,
+    "dbid" : -34054,
+    "distance" : 13626,
+    "elevation" : 536,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "542",
+      "ele" : "544",
+      "name" : "Le Grand Sanguin",
+      "osm_id" : "1556835689"
+    },
+    "name" : "Le Grand Sanguin",
+    "sectorIndex" : 0,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.038498133,
+    "azimut" : 0.08935438,
+    "dbid" : -34227,
+    "distance" : 13137,
+    "elevation" : 534,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "532",
+      "ele" : "540",
+      "name" : "Le Petit Sanguin",
+      "osm_id" : "1556835691",
+      "wikidata" : "Q31677182"
+    },
+    "name" : "Le Petit Sanguin",
+    "sectorIndex" : 0,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.039058875,
+    "azimut" : 0.10469419,
+    "dbid" : -34056,
+    "distance" : 13460,
+    "elevation" : 555,
+    "importance" : 0.80495054,
+    "keyvalues" : {
+      "demele" : "554",
+      "ele" : "561",
+      "name" : "La Petite Etoile",
+      "osm_id" : "1556835687",
+      "prominence" : "40"
+    },
+    "name" : "La Petite Etoile",
+    "sectorIndex" : 0,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.042891145,
+    "azimut" : 0.19328158,
+    "dbid" : -34225,
+    "distance" : 13025,
+    "elevation" : 587,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "589",
+      "ele" : "590",
+      "name" : "La Grande Étoile",
+      "name:oc" : "L'Estelàs",
+      "osm_id" : "443317535",
+      "wikidata" : "Q132731838"
+    },
+    "name" : "La Grande Étoile",
+    "sectorIndex" : 0,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.0244126,
+    "azimut" : 0.4962428,
+    "dbid" : -34768,
+    "distance" : 16136,
+    "elevation" : 428,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte de l'ermite",
+      "osm_id" : "11744129241"
+    },
+    "name" : "Grotte de l'ermite",
+    "sectorIndex" : 2,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.04081525,
+    "azimut" : 0.559136,
+    "dbid" : -34080,
+    "distance" : 17949,
+    "elevation" : 771,
+    "importance" : 1,
+    "keyvalues" : {
+      "demele" : "773",
+      "name" : "Tête du Grand Puech",
+      "osm_id" : "3268194878",
+      "prominence" : "434"
+    },
+    "name" : "Tête du Grand Puech",
+    "sectorIndex" : 2,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.029403288,
+    "azimut" : 0.5744758,
+    "dbid" : -34079,
+    "distance" : 16660,
+    "elevation" : 525,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "515",
+      "name" : "Aire de la Moure",
+      "osm_id" : "9505730278"
+    },
+    "name" : "Aire de la Moure",
+    "sectorIndex" : 2,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.03390778,
+    "azimut" : 0.64887387,
+    "dbid" : -34701,
+    "distance" : 18101,
+    "elevation" : 652,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte des Fées",
+      "osm_id" : "3268202843"
+    },
+    "name" : "Grotte des Fées",
+    "sectorIndex" : 3,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.032405924,
+    "azimut" : 0.7037137,
+    "dbid" : -34702,
+    "distance" : 17830,
+    "elevation" : 615,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte des Voleurs",
+      "osm_id" : "9505730274"
+    },
+    "name" : "Grotte des Voleurs",
+    "sectorIndex" : 3,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.033992082,
+    "azimut" : 0.6948933,
+    "dbid" : -34081,
+    "distance" : 17762,
+    "elevation" : 641,
+    "importance" : 0.83910894,
+    "keyvalues" : {
+      "demele" : "641",
+      "ele" : "633",
+      "name" : "Mont Julien",
+      "osm_id" : "3268195962",
+      "prominence" : "109"
+    },
+    "name" : "Mont Julien",
+    "sectorIndex" : 3,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.026691932,
+    "azimut" : 0.70141274,
+    "dbid" : -34077,
+    "distance" : 16031,
+    "elevation" : 461,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "455",
+      "name" : "Collet du Ratier",
+      "osm_id" : "9505730272"
+    },
+    "name" : "Collet du Ratier",
+    "sectorIndex" : 3,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.029339898,
+    "azimut" : 0.72365546,
+    "dbid" : -34082,
+    "distance" : 17616,
+    "elevation" : 554,
+    "importance" : 0.8014852,
+    "keyvalues" : {
+      "demele" : "566",
+      "name" : "Le Ratier",
+      "osm_id" : "3268194913",
+      "prominence" : "33"
+    },
+    "name" : "Le Ratier",
+    "sectorIndex" : 3,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.028268704,
+    "azimut" : 0.7481991,
+    "dbid" : -34074,
+    "distance" : 12873,
+    "elevation" : 392,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "392",
+      "name" : "Tête Blanche",
+      "osm_id" : "9505730224"
+    },
+    "name" : "Tête Blanche",
+    "sectorIndex" : 3,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.0192002,
+    "azimut" : 0.8475244,
+    "dbid" : -34662,
+    "distance" : 7499,
+    "elevation" : 165,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grottes Monnard",
+      "osm_id" : "5016151769"
+    },
+    "name" : "Grottes Monnard",
+    "sectorIndex" : 4,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.034785382,
+    "azimut" : 0.9015972,
+    "dbid" : -34695,
+    "distance" : 12414,
+    "elevation" : 459,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Abri des Bartavelles",
+      "osm_id" : "9561429343"
+    },
+    "name" : "Abri des Bartavelles",
+    "sectorIndex" : 4,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.03258497,
+    "azimut" : 0.90696615,
+    "dbid" : -34689,
+    "distance" : 12486,
+    "elevation" : 434,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte des Escaupres",
+      "name:oc" : "Espeluca deis Escaupres",
+      "osm_id" : "5016120159"
+    },
+    "name" : "Grotte des Escaupres",
+    "sectorIndex" : 4,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.032336745,
+    "azimut" : 0.90773314,
+    "dbid" : -34690,
+    "distance" : 12551,
+    "elevation" : 433,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte de l'étoile",
+      "osm_id" : "9555135428"
+    },
+    "name" : "Grotte de l'étoile",
+    "sectorIndex" : 4,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.046001993,
+    "azimut" : 0.9249904,
+    "dbid" : -34693,
+    "distance" : 13403,
+    "elevation" : 646,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte du Grosibou",
+      "osm_id" : "2796240719"
+    },
+    "name" : "Grotte du Grosibou",
+    "sectorIndex" : 4,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.04595406,
+    "azimut" : 0.9257574,
+    "dbid" : -34694,
+    "distance" : 13417,
+    "elevation" : 646,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte du Grosibou",
+      "osm_id" : "7022632147"
+    },
+    "name" : "Grotte du Grosibou",
+    "sectorIndex" : 4,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.032336745,
+    "azimut" : 0.90773314,
+    "dbid" : -34406,
+    "distance" : 12551,
+    "elevation" : 433,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Source de l'Etoile",
+      "osm_id" : "7114068011"
+    },
+    "name" : "Source de l'Etoile",
+    "sectorIndex" : 4,
+    "type" : "natural.spring"
+  },
+  {
+    "altitude" : 0.042332806,
+    "azimut" : 0.91962147,
+    "dbid" : -34407,
+    "distance" : 13197,
+    "elevation" : 587,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Source de Font Berguette",
+      "osm_id" : "7114071913"
+    },
+    "name" : "Source de Font Berguette",
+    "sectorIndex" : 4,
+    "type" : "natural.spring"
+  },
+  {
+    "altitude" : 0.03069054,
+    "azimut" : 0.8133933,
+    "dbid" : -34059,
+    "distance" : 11140,
+    "elevation" : 367,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "331",
+      "name" : "Pueg Nòu",
+      "name:oc" : "Pueg Nòu",
+      "osm_id" : "6110578279"
+    },
+    "name" : "Pueg Nòu",
+    "sectorIndex" : 4,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.036133062,
+    "azimut" : 0.8133933,
+    "dbid" : -34058,
+    "distance" : 11425,
+    "elevation" : 438,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "434",
+      "ele" : "439",
+      "name" : "Petite Téte Rouge",
+      "osm_id" : "6583774112"
+    },
+    "name" : "Petite Téte Rouge",
+    "sectorIndex" : 4,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.04120738,
+    "azimut" : 0.8893254,
+    "dbid" : -34127,
+    "distance" : 12903,
+    "elevation" : 560,
+    "importance" : 0.8079208,
+    "keyvalues" : {
+      "demele" : "555",
+      "ele" : "569",
+      "name" : "Pounche des Escaouprés",
+      "osm_id" : "11874482672",
+      "prominence" : "46"
+    },
+    "name" : "Pounche des Escaouprés",
+    "sectorIndex" : 4,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.040726367,
+    "azimut" : 0.8935438,
+    "dbid" : -34140,
+    "distance" : 11804,
+    "elevation" : 507,
+    "importance" : 0.81633663,
+    "keyvalues" : {
+      "demele" : "517",
+      "ele" : "520",
+      "name" : "Grande Tête Rouge",
+      "osm_id" : "2495232163",
+      "prominence" : "63"
+    },
+    "name" : "Grande Tête Rouge",
+    "sectorIndex" : 4,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.04678634,
+    "azimut" : 0.92153895,
+    "dbid" : -34182,
+    "distance" : 13477,
+    "elevation" : 660,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "660",
+      "ele" : "667",
+      "name" : "Pic du Taoumé",
+      "name:oc" : "Pic de Taume",
+      "osm_id" : "7114042096"
+    },
+    "name" : "Pic du Taoumé",
+    "sectorIndex" : 4,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.032544345,
+    "azimut" : 0.94800013,
+    "dbid" : -34073,
+    "distance" : 12133,
+    "elevation" : 421,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "424",
+      "ele" : "432",
+      "name" : "Tete Ronde",
+      "osm_id" : "1643063739"
+    },
+    "name" : "Tete Ronde",
+    "sectorIndex" : 4,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.045923818,
+    "azimut" : 0.9664079,
+    "dbid" : -34075,
+    "distance" : 14862,
+    "elevation" : 714,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "716",
+      "ele" : "731",
+      "name" : "Butte des Pinsots",
+      "osm_id" : "9505730228"
+    },
+    "name" : "Butte des Pinsots",
+    "sectorIndex" : 4,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.031334788,
+    "azimut" : 0.83141756,
+    "dbid" : -34887,
+    "distance" : 11836,
+    "elevation" : 397,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col de Cante-Perdrix",
+      "osm_id" : "717486048"
+    },
+    "name" : "Col de Cante-Perdrix",
+    "sectorIndex" : 4,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.039401714,
+    "azimut" : 0.9341943,
+    "dbid" : -34939,
+    "distance" : 13013,
+    "elevation" : 541,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Pas du Loup",
+      "osm_id" : "1643065432"
+    },
+    "name" : "Pas du Loup",
+    "sectorIndex" : 4,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.044349797,
+    "azimut" : 0.96103895,
+    "dbid" : -34888,
+    "distance" : 14917,
+    "elevation" : 693,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col du Tubé",
+      "osm_id" : "1325256036"
+    },
+    "name" : "Col du Tubé",
+    "sectorIndex" : 4,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.030756123,
+    "azimut" : 0.99747103,
+    "dbid" : -34678,
+    "distance" : 13554,
+    "elevation" : 446,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Baume de Passe-Temps",
+      "osm_id" : "2375540984"
+    },
+    "name" : "Baume de Passe-Temps",
+    "sectorIndex" : 5,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.03652437,
+    "azimut" : 1.0243157,
+    "dbid" : -34679,
+    "distance" : 13355,
+    "elevation" : 517,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Baume du Plantier (dite de Manon des Sources)",
+      "osm_id" : "2375540985"
+    },
+    "name" : "Baume du Plantier (dite de Manon des Sources)",
+    "sectorIndex" : 5,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.037532657,
+    "azimut" : 1.0254662,
+    "dbid" : -34680,
+    "distance" : 13422,
+    "elevation" : 533,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte du Cerf",
+      "osm_id" : "9555079875"
+    },
+    "name" : "Grotte du Cerf",
+    "sectorIndex" : 5,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.044500377,
+    "azimut" : 1.0576798,
+    "dbid" : -34681,
+    "distance" : 14844,
+    "elevation" : 692,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte de 11 heures",
+      "osm_id" : "5029690044"
+    },
+    "name" : "Grotte de 11 heures",
+    "sectorIndex" : 5,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.02948275,
+    "azimut" : 1.0553788,
+    "dbid" : -34072,
+    "distance" : 11834,
+    "elevation" : 375,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "376",
+      "ele" : "385",
+      "name" : "Barre du Saint-Esprit",
+      "name:oc" : "Bauç dau Sant Esperit",
+      "osm_id" : "341890510"
+    },
+    "name" : "Barre du Saint-Esprit",
+    "sectorIndex" : 5,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.045849398,
+    "azimut" : 1.0618982,
+    "dbid" : -33939,
+    "distance" : 14690,
+    "elevation" : 705,
+    "importance" : 0.8247525,
+    "keyvalues" : {
+      "demele" : "705",
+      "ele" : "714",
+      "name" : "Le Garlaban",
+      "name:oc" : "Garlaban",
+      "osm_id" : "1569281388",
+      "prominence" : "80",
+      "wikidata" : "Q3098391",
+      "wikipedia" : "fr:Garlaban"
+    },
+    "name" : "Le Garlaban",
+    "sectorIndex" : 5,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.034853153,
+    "azimut" : 1.1554711,
+    "dbid" : -34197,
+    "distance" : 12017,
+    "elevation" : 445,
+    "importance" : 0.8460396,
+    "keyvalues" : {
+      "demele" : "447",
+      "ele" : "448",
+      "name" : "Le Ruissatel",
+      "name:oc" : "Lo Russadèu",
+      "osm_id" : "2495232165",
+      "prominence" : "123"
+    },
+    "name" : "Le Ruissatel",
+    "sectorIndex" : 5,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.03420151,
+    "azimut" : 1.0120438,
+    "dbid" : -34883,
+    "distance" : 13386,
+    "elevation" : 487,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col Salis",
+      "osm_id" : "9561329467"
+    },
+    "name" : "Col Salis",
+    "sectorIndex" : 5,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.04206219,
+    "azimut" : 1.3717623,
+    "dbid" : -34063,
+    "distance" : 6344,
+    "elevation" : 286,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "284",
+      "ele" : "302",
+      "name" : "Roc de la Croix",
+      "name:oc" : "Ròc de la Crotz",
+      "osm_id" : "4819560639"
+    },
+    "name" : "Roc de la Croix",
+    "sectorIndex" : 6,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.0814061,
+    "azimut" : 1.6375245,
+    "dbid" : -34065,
+    "distance" : 3530,
+    "elevation" : 306,
+    "importance" : 0.829703,
+    "keyvalues" : {
+      "demele" : "318",
+      "ele" : "319",
+      "name" : "Mont Sainte-Croix",
+      "name:oc" : "Mont de la Santa Crotz",
+      "osm_id" : "4818234986",
+      "prominence" : "90"
+    },
+    "name" : "Mont Sainte-Croix",
+    "sectorIndex" : 8,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.1014654,
+    "azimut" : 1.7472041,
+    "dbid" : -33943,
+    "distance" : 5785,
+    "elevation" : 608,
+    "importance" : 0.83168316,
+    "keyvalues" : {
+      "demele" : "608",
+      "ele" : "610",
+      "name" : "Mont Saint-Cyr",
+      "name:oc" : "Mont de Sant Ciri",
+      "osm_id" : "1254393591",
+      "prominence" : "94"
+    },
+    "name" : "Mont Saint-Cyr",
+    "sectorIndex" : 8,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.09812212,
+    "azimut" : 1.8380924,
+    "dbid" : -33944,
+    "distance" : 6339,
+    "elevation" : 643,
+    "importance" : 0.9752475,
+    "keyvalues" : {
+      "demele" : "644",
+      "ele" : "645",
+      "name" : "Mont Carpiagne",
+      "name:oc" : "Mont Carpesanha",
+      "osm_id" : "1254393869",
+      "prominence" : "384",
+      "wikidata" : "Q31649314"
+    },
+    "name" : "Mont Carpiagne",
+    "sectorIndex" : 9,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.0702873,
+    "azimut" : 1.8906313,
+    "dbid" : -34061,
+    "distance" : 2926,
+    "elevation" : 224,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "230",
+      "ele" : "231",
+      "name" : "Mont Rouvière",
+      "name:oc" : "Mont de la Roviera",
+      "osm_id" : "4818234987"
+    },
+    "name" : "Mont Rouvière",
+    "sectorIndex" : 9,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.08606928,
+    "azimut" : 1.795141,
+    "dbid" : -34880,
+    "distance" : 5934,
+    "elevation" : 531,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col Sabatier",
+      "name:oc" : "Pas Sabatier",
+      "osm_id" : "1254394107"
+    },
+    "name" : "Col Sabatier",
+    "sectorIndex" : 9,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.065257914,
+    "azimut" : 2.1245635,
+    "dbid" : -34223,
+    "distance" : 5218,
+    "elevation" : 360,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "362",
+      "ele" : "364",
+      "name" : "Monts de la Gineste",
+      "name:oc" : "Monts de La Ginèsta",
+      "osm_id" : "9517565901"
+    },
+    "name" : "Monts de la Gineste",
+    "sectorIndex" : 10,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.060083725,
+    "azimut" : 2.1790197,
+    "dbid" : -34115,
+    "distance" : 6533,
+    "elevation" : 413,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "412",
+      "ele" : "414",
+      "name" : "Pain de Sucre",
+      "osm_id" : "3234710582"
+    },
+    "name" : "Pain de Sucre",
+    "sectorIndex" : 11,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.0699967,
+    "azimut" : 2.3492916,
+    "dbid" : -34207,
+    "distance" : 6832,
+    "elevation" : 499,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "alt_name" : "Aiguille Guillemin",
+      "alt_name_1" : "Aiguille de la Gouargue",
+      "demele" : "489",
+      "ele" : "495",
+      "name" : "Aiguille Guillermin",
+      "name:oc" : "Agulha de la Gòrga",
+      "osm_id" : "4553099718"
+    },
+    "name" : "Aiguille Guillermin",
+    "sectorIndex" : 11,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.051036194,
+    "azimut" : 2.4267576,
+    "dbid" : -34802,
+    "distance" : 7126,
+    "elevation" : 384,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte Carrée",
+      "osm_id" : "3338240586"
+    },
+    "name" : "Grotte Carrée",
+    "sectorIndex" : 12,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.046340168,
+    "azimut" : 2.3561945,
+    "dbid" : -34138,
+    "distance" : 4205,
+    "elevation" : 213,
+    "importance" : 0.8183168,
+    "keyvalues" : {
+      "demele" : "208",
+      "ele" : "214",
+      "name" : "Mont Redon",
+      "name:oc" : "Mont Redon",
+      "osm_id" : "9517565900",
+      "prominence" : "67"
+    },
+    "name" : "Mont Redon",
+    "sectorIndex" : 12,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.07451929,
+    "azimut" : 2.3592625,
+    "dbid" : -34146,
+    "distance" : 7300,
+    "elevation" : 565,
+    "importance" : 0.9009901,
+    "keyvalues" : {
+      "demele" : "563",
+      "ele" : "563",
+      "name" : "Mont Puget",
+      "name:oc" : "Mont Puget",
+      "osm_id" : "271118551",
+      "prominence" : "234",
+      "wikidata" : "Q528586",
+      "wikipedia" : "fr:Mont Puget"
+    },
+    "name" : "Mont Puget",
+    "sectorIndex" : 12,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.047807824,
+    "azimut" : 2.6618402,
+    "dbid" : -34180,
+    "distance" : 5497,
+    "elevation" : 282,
+    "importance" : 0.8376238,
+    "keyvalues" : {
+      "demele" : "288",
+      "ele" : "288",
+      "name" : "Mont de Luminy",
+      "name:oc" : "Mont de Lumini",
+      "osm_id" : "4745453556",
+      "prominence" : "106"
+    },
+    "name" : "Mont de Luminy",
+    "sectorIndex" : 13,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.05242538,
+    "azimut" : 2.673345,
+    "dbid" : -34039,
+    "distance" : 4993,
+    "elevation" : 281,
+    "importance" : 0.80544555,
+    "keyvalues" : {
+      "demele" : "280",
+      "ele" : "286",
+      "name" : "Sommet des Escampons",
+      "name:oc" : "Cima deis Ecampons",
+      "osm_id" : "7626203747",
+      "prominence" : "41"
+    },
+    "name" : "Sommet des Escampons",
+    "sectorIndex" : 13,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.034682732,
+    "azimut" : 2.729719,
+    "dbid" : -34040,
+    "distance" : 5159,
+    "elevation" : 198,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "207",
+      "ele" : "161",
+      "name" : "Aiguille Charlotte",
+      "name:oc" : "Agulha Carlòta",
+      "osm_id" : "4734177117"
+    },
+    "name" : "Aiguille Charlotte",
+    "sectorIndex" : 13,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.039395373,
+    "azimut" : 2.7316363,
+    "dbid" : -34041,
+    "distance" : 4998,
+    "elevation" : 216,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "217",
+      "ele" : "222",
+      "name" : "Aiguille des Baumettes",
+      "name:oc" : "Agulha dei Baumetas",
+      "osm_id" : "7454392076"
+    },
+    "name" : "Aiguille des Baumettes",
+    "sectorIndex" : 13,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.03890942,
+    "azimut" : 2.7389226,
+    "dbid" : -34209,
+    "distance" : 6499,
+    "elevation" : 273,
+    "importance" : 0.8257426,
+    "keyvalues" : {
+      "demele" : "278",
+      "ele" : "281",
+      "name" : "Baou rond",
+      "name:fr" : "Baou Rond",
+      "name:oc" : "Bauç Redon",
+      "osm_id" : "4554132627",
+      "prominence" : "82"
+    },
+    "name" : "Baou Rond",
+    "sectorIndex" : 13,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.0264385,
+    "azimut" : 2.7619324,
+    "dbid" : -34476,
+    "distance" : 5105,
+    "elevation" : 154,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte des Escampons",
+      "name:oc" : "Bauma deis Escampons",
+      "osm_id" : "11281771900"
+    },
+    "name" : "Grotte des Escampons",
+    "sectorIndex" : 14,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.040402368,
+    "azimut" : 2.9038255,
+    "dbid" : -34220,
+    "distance" : 5467,
+    "elevation" : 240,
+    "importance" : 0.8168317,
+    "keyvalues" : {
+      "demele" : "244",
+      "ele" : "244",
+      "name" : "Colline de Lun",
+      "osm_id" : "4866266516",
+      "prominence" : "64"
+    },
+    "name" : "Colline de Lun",
+    "sectorIndex" : 14,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.03212284,
+    "azimut" : 2.751578,
+    "dbid" : -34933,
+    "distance" : 5975,
+    "elevation" : 211,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col des Escourtines",
+      "name:oc" : "Pas dei Cortinas",
+      "osm_id" : "112324197"
+    },
+    "name" : "Col des Escourtines",
+    "sectorIndex" : 14,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.027765935,
+    "azimut" : 2.8528209,
+    "dbid" : -34870,
+    "distance" : 5905,
+    "elevation" : 183,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col des Baumettes",
+      "name:oc" : "Pas dei Baumetas",
+      "osm_id" : "30835208"
+    },
+    "name" : "Col des Baumettes",
+    "sectorIndex" : 14,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.031896733,
+    "azimut" : 2.8758304,
+    "dbid" : -34852,
+    "distance" : 5798,
+    "elevation" : 204,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col des Baumettes",
+      "name:oc" : "Pas dei Baumetas",
+      "osm_id" : "10737435122"
+    },
+    "name" : "Col des Baumettes",
+    "sectorIndex" : 14,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.036451492,
+    "azimut" : 2.8957722,
+    "dbid" : -34894,
+    "distance" : 5594,
+    "elevation" : 223,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col de Lum",
+      "name:oc" : "Pas de Lamp",
+      "osm_id" : "1811694107"
+    },
+    "name" : "Col de Lum",
+    "sectorIndex" : 14,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.033067662,
+    "azimut" : 2.9694033,
+    "dbid" : -34523,
+    "distance" : 6046,
+    "elevation" : 219,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Brêche du Pignet",
+      "name:oc" : "Bèrca dau Pinhet",
+      "osm_id" : "4757065330"
+    },
+    "name" : "Brêche du Pignet",
+    "sectorIndex" : 15,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.03412227,
+    "azimut" : 2.9736218,
+    "dbid" : -34468,
+    "distance" : 5859,
+    "elevation" : 219,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Abri du Col de Sormiou",
+      "name:oc" : "Sosta dau Pas de Sormiu",
+      "osm_id" : "1989561194"
+    },
+    "name" : "Abri du Col de Sormiou",
+    "sectorIndex" : 15,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.04006998,
+    "azimut" : 2.990112,
+    "dbid" : -34494,
+    "distance" : 5687,
+    "elevation" : 247,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte 300",
+      "osm_id" : "11269528594"
+    },
+    "name" : "Grotte 300",
+    "sectorIndex" : 15,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.049077556,
+    "azimut" : 3.078316,
+    "dbid" : -34781,
+    "distance" : 5436,
+    "elevation" : 286,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte du Jas de Segond",
+      "osm_id" : "4750660183"
+    },
+    "name" : "Grotte du Jas de Segond",
+    "sectorIndex" : 15,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.066735104,
+    "azimut" : 3.124719,
+    "dbid" : -34114,
+    "distance" : 5566,
+    "elevation" : 391,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "394",
+      "ele" : "396",
+      "name" : "Signal Est de l'Homme Mort",
+      "name:oc" : "Pic de l’Oume Mòrt Levantés",
+      "osm_id" : "1429403197"
+    },
+    "name" : "Signal Est de l'Homme Mort",
+    "sectorIndex" : 15,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.06504366,
+    "azimut" : 3.1362238,
+    "dbid" : -34218,
+    "distance" : 5312,
+    "elevation" : 365,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "359",
+      "ele" : "366",
+      "name" : "Grand Chameau",
+      "osm_id" : "4750656587"
+    },
+    "name" : "Grand Chameau",
+    "sectorIndex" : 15,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.031081572,
+    "azimut" : 2.955981,
+    "dbid" : -34920,
+    "distance" : 5918,
+    "elevation" : 203,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col de Sormiou",
+      "name:oc" : "Pas de Sormiu",
+      "osm_id" : "30835196",
+      "wikidata" : "Q2982119",
+      "wikipedia" : "fr:Col de Sormiou"
+    },
+    "name" : "Col de Sormiou",
+    "sectorIndex" : 15,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.033663455,
+    "azimut" : 2.9705539,
+    "dbid" : -34913,
+    "distance" : 6028,
+    "elevation" : 222,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col du Pignet",
+      "name:oc" : "Pas dau Pinhet",
+      "osm_id" : "1811689908"
+    },
+    "name" : "Col du Pignet",
+    "sectorIndex" : 15,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.018469056,
+    "azimut" : 3.1538644,
+    "dbid" : -34520,
+    "distance" : 3519,
+    "elevation" : 83,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Aven du Roy d'Espagne",
+      "osm_id" : "11269528632"
+    },
+    "name" : "Aven du Roy d'Espagne",
+    "sectorIndex" : 16,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.04696802,
+    "azimut" : 3.1933646,
+    "dbid" : -34783,
+    "distance" : 5021,
+    "elevation" : 255,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte Dechaux",
+      "osm_id" : "10656104814"
+    },
+    "name" : "Grotte Dechaux",
+    "sectorIndex" : 16,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.031252507,
+    "azimut" : 3.2163742,
+    "dbid" : -34627,
+    "distance" : 4926,
+    "elevation" : 173,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte de la Voire",
+      "osm_id" : "8629845284"
+    },
+    "name" : "Grotte de la Voire",
+    "sectorIndex" : 16,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.048392206,
+    "azimut" : 3.2631607,
+    "dbid" : -34782,
+    "distance" : 3758,
+    "elevation" : 200,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte de l'Aigle",
+      "osm_id" : "4748915783"
+    },
+    "name" : "Grotte de l'Aigle",
+    "sectorIndex" : 16,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.051793102,
+    "azimut" : 3.271214,
+    "dbid" : -34519,
+    "distance" : 4784,
+    "elevation" : 266,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Abri du Puits du Lierre n° 3",
+      "osm_id" : "11269528629"
+    },
+    "name" : "Abri du Puits du Lierre n° 3",
+    "sectorIndex" : 16,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.051582966,
+    "azimut" : 3.2888548,
+    "dbid" : -34492,
+    "distance" : 4881,
+    "elevation" : 271,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte de l'Argile",
+      "osm_id" : "9638780562"
+    },
+    "name" : "Grotte de l'Argile",
+    "sectorIndex" : 16,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.06380904,
+    "azimut" : 3.3291218,
+    "dbid" : -34491,
+    "distance" : 4836,
+    "elevation" : 327,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte du Puits du Lierre",
+      "osm_id" : "8821984517"
+    },
+    "name" : "Grotte du Puits du Lierre",
+    "sectorIndex" : 16,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.03125885,
+    "azimut" : 3.2163742,
+    "dbid" : -34421,
+    "distance" : 4925,
+    "elevation" : 173,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "alt_name" : "Fontaine d'Ivoire",
+      "name" : "Fontaine de Voire",
+      "name:oc" : "Fònt de Voira",
+      "osm_id" : "742435370"
+    },
+    "name" : "Fontaine de Voire",
+    "sectorIndex" : 16,
+    "type" : "natural.spring"
+  },
+  {
+    "altitude" : 0.04478136,
+    "azimut" : 3.1684372,
+    "dbid" : -34185,
+    "distance" : 3816,
+    "elevation" : 189,
+    "importance" : 0.81633663,
+    "keyvalues" : {
+      "demele" : "197",
+      "ele" : "254",
+      "name" : "Montagne de l'Aigle",
+      "name:oc" : "Montanha de l’Agla",
+      "osm_id" : "4803672208",
+      "prominence" : "63"
+    },
+    "name" : "Montagne de l'Aigle",
+    "sectorIndex" : 16,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.06620438,
+    "azimut" : 3.2589421,
+    "dbid" : -34217,
+    "distance" : 5656,
+    "elevation" : 394,
+    "importance" : 0.84801984,
+    "keyvalues" : {
+      "demele" : "395",
+      "ele" : "396",
+      "name" : "Signal Sud de l'Homme Mort",
+      "name:oc" : "Pic Miejornau de l’Oume Mòrt",
+      "osm_id" : "4745504480",
+      "prominence" : "127"
+    },
+    "name" : "Signal Sud de l'Homme Mort",
+    "sectorIndex" : 16,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.06758801,
+    "azimut" : 3.3283548,
+    "dbid" : -34113,
+    "distance" : 5141,
+    "elevation" : 367,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "369",
+      "ele" : "374",
+      "name" : "Sommet Ouest de l'Homme Mort",
+      "name:oc" : "Pic de l’Oume Mòrt Ponentés",
+      "osm_id" : "1429403066",
+      "prominence" : "30"
+    },
+    "name" : "Sommet Ouest de l'Homme Mort",
+    "sectorIndex" : 16,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.06312231,
+    "azimut" : 3.141976,
+    "dbid" : -34917,
+    "distance" : 5221,
+    "elevation" : 349,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col des Trois Pics",
+      "name:oc" : "Pas dei Tres Pics",
+      "osm_id" : "4747850257"
+    },
+    "name" : "Col des Trois Pics",
+    "sectorIndex" : 16,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.06437305,
+    "azimut" : 3.3632529,
+    "dbid" : -34518,
+    "distance" : 4778,
+    "elevation" : 326,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Baume n° 62",
+      "osm_id" : "11269528628"
+    },
+    "name" : "Baume n° 62",
+    "sectorIndex" : 17,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.06427914,
+    "azimut" : 3.3647869,
+    "dbid" : -34517,
+    "distance" : 4785,
+    "elevation" : 326,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte n° 62",
+      "osm_id" : "11269528627"
+    },
+    "name" : "Grotte n° 62",
+    "sectorIndex" : 17,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.037284117,
+    "azimut" : 3.4760005,
+    "dbid" : -34486,
+    "distance" : 4343,
+    "elevation" : 180,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte de Paragon",
+      "osm_id" : "4555883668"
+    },
+    "name" : "Grotte de Paragon",
+    "sectorIndex" : 17,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.06221412,
+    "azimut" : 3.4736996,
+    "dbid" : -34203,
+    "distance" : 5779,
+    "elevation" : 379,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "384",
+      "ele" : "384",
+      "name" : "Tête de la Mounine",
+      "name:oc" : "Tèsta de la Monina",
+      "osm_id" : "3344028081"
+    },
+    "name" : "Tête de la Mounine",
+    "sectorIndex" : 17,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.075328894,
+    "azimut" : 3.5001607,
+    "dbid" : -33938,
+    "distance" : 5406,
+    "elevation" : 427,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "431",
+      "ele" : "433",
+      "name" : "Marseilleveyre",
+      "name:oc" : "Marselha Vièlha",
+      "osm_id" : "1105441471",
+      "wikidata" : "Q1284311",
+      "wikipedia" : "fr:Massif de Marseilleveyre"
+    },
+    "name" : "Marseilleveyre",
+    "sectorIndex" : 17,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.048946716,
+    "azimut" : 3.4069712,
+    "dbid" : -34904,
+    "distance" : 5226,
+    "elevation" : 275,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col de la Selle",
+      "name:oc" : "Pas de la Sela",
+      "osm_id" : "1105440550"
+    },
+    "name" : "Col de la Selle",
+    "sectorIndex" : 17,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.032869782,
+    "azimut" : 3.5411947,
+    "dbid" : -34780,
+    "distance" : 5018,
+    "elevation" : 184,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte Rolland",
+      "osm_id" : "1847503106"
+    },
+    "name" : "Grotte Rolland",
+    "sectorIndex" : 18,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.04479256,
+    "azimut" : 3.5722578,
+    "dbid" : -34512,
+    "distance" : 5466,
+    "elevation" : 264,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Aven Gombault",
+      "osm_id" : "11269528622"
+    },
+    "name" : "Aven Gombault",
+    "sectorIndex" : 18,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.060353365,
+    "azimut" : 3.6021705,
+    "dbid" : -34483,
+    "distance" : 5577,
+    "elevation" : 356,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte de la Colonne",
+      "osm_id" : "1748670272"
+    },
+    "name" : "Grotte de la Colonne",
+    "sectorIndex" : 18,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.05199095,
+    "azimut" : 3.6056218,
+    "dbid" : -34484,
+    "distance" : 5496,
+    "elevation" : 305,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Baume des Houx",
+      "name:oc" : "Avenc dau Verboisset",
+      "osm_id" : "1748670430"
+    },
+    "name" : "Baume des Houx",
+    "sectorIndex" : 18,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.033684544,
+    "azimut" : 3.629782,
+    "dbid" : -34636,
+    "distance" : 5312,
+    "elevation" : 198,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "alt_name" : "Roche Percée",
+      "name" : "Trou de la Lune",
+      "osm_id" : "10198575437"
+    },
+    "name" : "Trou de la Lune",
+    "sectorIndex" : 18,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.03369088,
+    "azimut" : 3.630549,
+    "dbid" : -34635,
+    "distance" : 5311,
+    "elevation" : 198,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "alt_name" : "Roche Percée",
+      "name" : "Trou de la Lune",
+      "osm_id" : "1847380202"
+    },
+    "name" : "Trou de la Lune",
+    "sectorIndex" : 18,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.04149928,
+    "azimut" : 3.6539423,
+    "dbid" : -34487,
+    "distance" : 5515,
+    "elevation" : 248,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte du Vallon de la Croix Noire",
+      "osm_id" : "4748915775"
+    },
+    "name" : "Grotte du Vallon de la Croix Noire",
+    "sectorIndex" : 18,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.041356962,
+    "azimut" : 3.6562433,
+    "dbid" : -34516,
+    "distance" : 5534,
+    "elevation" : 248,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte du Pilier",
+      "osm_id" : "11269528626"
+    },
+    "name" : "Grotte du Pilier",
+    "sectorIndex" : 18,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.054051433,
+    "azimut" : 3.5611365,
+    "dbid" : -34043,
+    "distance" : 5397,
+    "elevation" : 311,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "306",
+      "name" : "La Mitre",
+      "name:oc" : "La Mitra",
+      "osm_id" : "4555831706"
+    },
+    "name" : "La Mitre",
+    "sectorIndex" : 18,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.06000915,
+    "azimut" : 3.6044714,
+    "dbid" : -34143,
+    "distance" : 5659,
+    "elevation" : 359,
+    "importance" : 0.81386137,
+    "keyvalues" : {
+      "demele" : "362",
+      "ele" : "366",
+      "name" : "Béouveyre",
+      "name:oc" : "Bèuveire",
+      "osm_id" : "1710234160",
+      "prominence" : "58",
+      "wikidata" : "Q2929941",
+      "wikipedia" : "fr:Béouveyre"
+    },
+    "name" : "Béouveyre",
+    "sectorIndex" : 18,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.054328743,
+    "azimut" : 3.581845,
+    "dbid" : -34871,
+    "distance" : 5682,
+    "elevation" : 328,
+    "importance" : 0.1,
+    "keyvalues" : {
+      "name" : "Col des Chèvres",
+      "name:oc" : "Lo Pas dei Cabras",
+      "osm_id" : "1105440877"
+    },
+    "name" : "Col des Chèvres",
+    "sectorIndex" : 18,
+    "type" : "natural.saddle"
+  },
+  {
+    "altitude" : 0.011905707,
+    "azimut" : 3.7693744,
+    "dbid" : -34193,
+    "distance" : 7895,
+    "elevation" : 115,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "125",
+      "ele" : "100",
+      "name" : "Pic des Gabians",
+      "name:oc" : "Pic dei Gabians",
+      "osm_id" : "5737259159"
+    },
+    "name" : "Pic des Gabians",
+    "sectorIndex" : 19,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.012260966,
+    "azimut" : 3.792384,
+    "dbid" : -34198,
+    "distance" : 8074,
+    "elevation" : 120,
+    "importance" : 0.85148513,
+    "keyvalues" : {
+      "demele" : "134",
+      "ele" : "141",
+      "name" : "Sommet de l'Île Maïre",
+      "name:oc" : "Cima de Maira",
+      "osm_id" : "5244495527",
+      "prominence" : "134"
+    },
+    "name" : "Sommet de l'Île Maïre",
+    "sectorIndex" : 19,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.010577756,
+    "azimut" : 3.8261316,
+    "dbid" : -34042,
+    "distance" : 5483,
+    "elevation" : 77,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "67",
+      "ele" : "60",
+      "name" : "Mont Rose",
+      "name:oc" : "Mont Ròsa",
+      "osm_id" : "9517565885"
+    },
+    "name" : "Mont Rose",
+    "sectorIndex" : 19,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.0025439074,
+    "azimut" : 3.8825054,
+    "dbid" : -34046,
+    "distance" : 8255,
+    "elevation" : 42,
+    "importance" : 0.8089109,
+    "keyvalues" : {
+      "demele" : "48",
+      "ele" : "20",
+      "name" : "Tiboulen de Maïre",
+      "name:oc" : "Tibolenc de Maire",
+      "osm_id" : "5244495528",
+      "prominence" : "48"
+    },
+    "name" : "Tiboulen de Maïre",
+    "sectorIndex" : 19,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : -0.0018087835,
+    "azimut" : 4.1870008,
+    "dbid" : -34047,
+    "distance" : 15480,
+    "elevation" : 4,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "5",
+      "ele" : "21",
+      "name" : "Île de la (du) Planier",
+      "name:oc" : "Illon de la Planiá",
+      "osm_id" : "5244508863"
+    },
+    "name" : "Île de la (du) Planier",
+    "sectorIndex" : 21,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.012611035,
+    "azimut" : 5.6803308,
+    "dbid" : -34666,
+    "distance" : 13876,
+    "elevation" : 205,
+    "importance" : 0.15,
+    "keyvalues" : {
+      "name" : "Grotte du Figuier",
+      "osm_id" : "4748962643"
+    },
+    "name" : "Grotte du Figuier",
+    "sectorIndex" : 28,
+    "type" : "natural.cave_entrance"
+  },
+  {
+    "altitude" : 0.015228228,
+    "azimut" : 5.7505107,
+    "dbid" : -34050,
+    "distance" : 15562,
+    "elevation" : 269,
+    "importance" : 0.80445546,
+    "keyvalues" : {
+      "demele" : "266",
+      "name" : "Butte de Baume Noire",
+      "osm_id" : "4591766531",
+      "prominence" : "39"
+    },
+    "name" : "Butte de Baume Noire",
+    "sectorIndex" : 29,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.012591399,
+    "azimut" : 5.7838745,
+    "dbid" : -34060,
+    "distance" : 12627,
+    "elevation" : 186,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "186",
+      "ele" : "190",
+      "name" : "Butte de la Pinède",
+      "name:oc" : "Collet de la Pineda",
+      "osm_id" : "4591766553"
+    },
+    "name" : "Butte de la Pinède",
+    "sectorIndex" : 29,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.016635304,
+    "azimut" : 5.85252,
+    "dbid" : -34196,
+    "distance" : 15087,
+    "elevation" : 282,
+    "importance" : 0.81237626,
+    "keyvalues" : {
+      "demele" : "285",
+      "ele" : "287",
+      "name" : "Sommet de la chaîne de l'Estaque",
+      "osm_id" : "12486474832",
+      "prominence" : "55"
+    },
+    "name" : "Sommet de la chaîne de l'Estaque",
+    "sectorIndex" : 29,
+    "type" : "natural.peak"
+  },
+  {
+    "altitude" : 0.017360339,
+    "azimut" : 5.864025,
+    "dbid" : -34195,
+    "distance" : 14284,
+    "elevation" : 278,
+    "importance" : 0.8,
+    "keyvalues" : {
+      "demele" : "276",
+      "ele" : "278",
+      "name" : "Tête d'Auguste",
+      "osm_id" : "4530484835"
+    },
+    "name" : "Tête d'Auguste",
+    "sectorIndex" : 29,
+    "type" : "natural.peak"
+  }
+]

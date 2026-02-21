@@ -21,6 +21,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.transformWhile
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeout
 
 @SuppressLint("MissingPermission")
@@ -38,6 +40,10 @@ class EnvisionBleManager(private val scope: CoroutineScope) {
 
     // Deferred that resolves when services are discovered and notifications are ready
     private var readyDeferred: CompletableDeferred<Unit>? = null
+
+    // Deferred + mutex for serialising BLE writes (Android GATT requires one write at a time)
+    private val writeMutex = Mutex()
+    private var writeDeferred: CompletableDeferred<Unit>? = null
 
     private val gattCallback = object : BluetoothGattCallback() {
 
@@ -84,6 +90,15 @@ class EnvisionBleManager(private val scope: CoroutineScope) {
             }
         }
 
+        override fun onCharacteristicWrite(
+            gatt: BluetoothGatt,
+            characteristic: BluetoothGattCharacteristic,
+            status: Int
+        ) {
+            writeDeferred?.complete(Unit)
+            writeDeferred = null
+        }
+
         @Suppress("DEPRECATION")
         override fun onCharacteristicChanged(
             gatt: BluetoothGatt,
@@ -128,18 +143,28 @@ class EnvisionBleManager(private val scope: CoroutineScope) {
     }
 
     /**
-     * Write a TLV frame to the TX characteristic.
+     * Write a TLV frame to the TX characteristic and suspend until the GATT write-ack
+     * is received. This serialises all writes so the BLE queue never overflows.
      */
-    fun sendFrame(frame: ByteArray) {
+    suspend fun sendFrame(frame: ByteArray) {
         val gatt = gatt ?: return
         val char = txChar ?: return
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            gatt.writeCharacteristic(char, frame, BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
-        } else {
-            @Suppress("DEPRECATION")
-            char.value = frame
-            @Suppress("DEPRECATION")
-            gatt.writeCharacteristic(char)
+        writeMutex.withLock {
+            val deferred = CompletableDeferred<Unit>()
+            writeDeferred = deferred
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                gatt.writeCharacteristic(char, frame, BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            } else {
+                @Suppress("DEPRECATION")
+                char.value = frame
+                @Suppress("DEPRECATION")
+                gatt.writeCharacteristic(char)
+            }
+            try {
+                withTimeout(3000) { deferred.await() }
+            } catch (e: TimeoutCancellationException) {
+                writeDeferred = null
+            }
         }
     }
 
