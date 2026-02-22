@@ -33,6 +33,7 @@ import com.example.envisiontools.ble.sendPosition
 import com.example.envisiontools.ble.sendStageCommand
 import com.example.envisiontools.ble.sendTarget
 import com.example.envisiontools.ble.sendTime
+import com.example.envisiontools.peakfinder.PeakFinderWebFetcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -56,6 +57,7 @@ data class EnvisionUiState(
     val landscapeProgress: Pair<Int, Int>? = null,
     val poiProgress: Pair<Int, Int>? = null,
     val fullFlowRunning: Boolean = false,
+    val peakFinderFetchRunning: Boolean = false,
 )
 
 @SuppressLint("MissingPermission")
@@ -559,6 +561,57 @@ class EnvisionViewModel : ViewModel() {
             null
         } catch (e: Exception) {
             null
+        }
+    }
+
+    /**
+     * Fetch landscape and POI data from PeakFinder for the given coordinates,
+     * then send them to the connected device via BLE.
+     */
+    fun fetchAndSendFromPeakFinder(context: Context, lat: Float, lon: Float) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(
+                peakFinderFetchRunning = true,
+                statusMessage = "Fetching from PeakFinder…"
+            )
+            try {
+                val fetcher = PeakFinderWebFetcher(context)
+                val (lines, pois) = fetcher.fetch(lat.toDouble(), lon.toDouble())
+
+                if (lines != null) {
+                    _uiState.value = _uiState.value.copy(statusMessage = "Sending landscape…")
+                    sendLandscape(lines, bleManager) { sent, total ->
+                        _uiState.value = _uiState.value.copy(
+                            landscapeProgress = Pair(sent, total),
+                            statusMessage = "Landscape: $sent/$total lines"
+                        )
+                    }
+                    _uiState.value = _uiState.value.copy(landscapeProgress = null)
+                }
+
+                if (pois != null) {
+                    _uiState.value = _uiState.value.copy(statusMessage = "Sending POI…")
+                    sendPoi(pois, bleManager) { sent, total ->
+                        _uiState.value = _uiState.value.copy(
+                            poiProgress = Pair(sent, total),
+                            statusMessage = "POI: $sent/$total entries"
+                        )
+                    }
+                    _uiState.value = _uiState.value.copy(poiProgress = null)
+                }
+
+                val lineCnt = lines?.size ?: 0
+                val poiCnt = pois?.size ?: 0
+                _uiState.value = _uiState.value.copy(
+                    peakFinderFetchRunning = false,
+                    statusMessage = "PeakFinder done ($lineCnt lines, $poiCnt POIs)"
+                )
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    peakFinderFetchRunning = false,
+                    statusMessage = "PeakFinder error: ${e.message}"
+                )
+            }
         }
     }
 
