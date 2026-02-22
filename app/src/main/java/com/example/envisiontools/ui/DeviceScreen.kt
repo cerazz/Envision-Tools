@@ -142,7 +142,7 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         }
     }
 
-    val isBusy = uiState.isLoading || uiState.fullFlowRunning
+    val isBusy = uiState.isLoading || uiState.fullFlowRunning || uiState.peakFinderFetchRunning
 
     Column(
         modifier = modifier
@@ -299,6 +299,20 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
+
+        // PeakFinder automatic fetch
+        if (uiState.peakFinderFetchRunning) {
+            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+        }
+        Button(
+            onClick = {
+                val latF = lat.toFloatOrNull() ?: return@Button
+                val lonF = lon.toFloatOrNull() ?: return@Button
+                viewModel.fetchAndSendFromPeakFinder(context, latF, lonF)
+            },
+            enabled = !isBusy,
+            modifier = Modifier.fillMaxWidth()
+        ) { Text("Fetch from PeakFinder") }
 
         // =========================================================
         // SECTION: Full Flow
