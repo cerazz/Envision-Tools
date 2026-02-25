@@ -7,7 +7,7 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; font-family: -apple-system, Roboto, sans-serif; background: #121212; }
-    #map { position: absolute; top: 0; left: 0; right: 0; bottom: 64px; background: #aad3df; }
+    #map { position: fixed; top: 0; left: 0; right: 0; bottom: 64px; background: #aad3df; }
     #bar {
       position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
       background: #1565c0;
@@ -79,7 +79,11 @@
         console.log('map_picker: startLat=' + startLat + ' startLon=' + startLon + ' (INITIAL_LAT defined=' + (typeof INITIAL_LAT !== 'undefined') + ')');
 
         var mapDiv = document.getElementById('map');
-        console.log('map_picker: #map div found=' + !!mapDiv + ' offsetWidth=' + (mapDiv ? mapDiv.offsetWidth : 'N/A') + ' offsetHeight=' + (mapDiv ? mapDiv.offsetHeight : 'N/A'));
+        /* Belt-and-suspenders: Android WebView can report offsetHeight=0 even with
+           CSS layout. Force an explicit pixel height before Leaflet initialises. */
+        var mapH = mapDiv.offsetHeight || (window.innerHeight - 64);
+        mapDiv.style.height = mapH + 'px';
+        console.log('map_picker: #map div found=' + !!mapDiv + ' offsetWidth=' + (mapDiv ? mapDiv.offsetWidth : 'N/A') + ' offsetHeight=' + mapH);
 
         map = L.map('map', { zoomControl: true }).setView([startLat, startLon], 10);
         map.invalidateSize();
