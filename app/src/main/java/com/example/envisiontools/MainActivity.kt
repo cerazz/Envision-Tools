@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.envisiontools.ui.DeviceScreen
+import com.example.envisiontools.ui.MapPickerScreen
 import com.example.envisiontools.ui.ScanScreen
 import com.example.envisiontools.ui.theme.EnvisionToolsTheme
 import com.example.envisiontools.viewmodel.ConnectionState
@@ -31,7 +32,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestBlePermissions()
+        requestPermissions()
         enableEdgeToEdge()
         setContent {
             EnvisionToolsTheme {
@@ -39,34 +40,39 @@ class MainActivity : ComponentActivity() {
                 val uiState by vm.uiState.collectAsState()
                 val navController = rememberNavController()
 
-                // Navigate between scan and device screens based on connection state
-                val startDest = "scan"
-
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = startDest,
+                        startDestination = "device",
                         modifier = Modifier.padding(innerPadding)
                     ) {
+                        composable("device") {
+                            DeviceScreen(
+                                viewModel = vm,
+                                onConnectClick = { navController.navigate("scan") },
+                                onPickFromMap = { lat, lon ->
+                                    navController.navigate("map_picker/$lat/$lon")
+                                }
+                            )
+                        }
                         composable("scan") {
                             ScanScreen(viewModel = vm)
-                            // Auto-navigate when connected
+                            // Auto-navigate back when connected
                             if (uiState.connectionState == ConnectionState.CONNECTED) {
-                                navController.navigate("device") {
-                                    popUpTo("scan") { inclusive = false }
-                                    launchSingleTop = true
-                                }
+                                navController.popBackStack()
                             }
                         }
-                        composable("device") {
-                            DeviceScreen(viewModel = vm)
-                            // Navigate back when disconnected
-                            if (uiState.connectionState == ConnectionState.DISCONNECTED) {
-                                navController.navigate("scan") {
-                                    popUpTo("device") { inclusive = true }
-                                    launchSingleTop = true
-                                }
-                            }
+                        composable("map_picker/{lat}/{lon}") { backStackEntry ->
+                            val lat = backStackEntry.arguments?.getString("lat")
+                                ?.toDoubleOrNull() ?: 43.2965
+                            val lon = backStackEntry.arguments?.getString("lon")
+                                ?.toDoubleOrNull() ?: 5.3698
+                            MapPickerScreen(
+                                viewModel = vm,
+                                initialLat = lat,
+                                initialLon = lon,
+                                onBack = { navController.popBackStack() }
+                            )
                         }
                     }
                 }
@@ -74,15 +80,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun requestBlePermissions() {
+    private fun requestPermissions() {
         val permissions = buildList {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 add(Manifest.permission.BLUETOOTH_SCAN)
                 add(Manifest.permission.BLUETOOTH_CONNECT)
-            } else {
-                add(Manifest.permission.ACCESS_FINE_LOCATION)
             }
+            add(Manifest.permission.ACCESS_FINE_LOCATION)
+            add(Manifest.permission.ACCESS_COARSE_LOCATION)
         }
         permissionLauncher.launch(permissions.toTypedArray())
     }
 }
+

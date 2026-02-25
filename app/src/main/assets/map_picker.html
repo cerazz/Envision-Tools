@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pick Location</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, Roboto, sans-serif; background: #121212; }
+    #map { width: 100%; height: calc(100vh - 64px); }
+    #bar {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
+      background: #1565c0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 16px; gap: 12px; z-index: 1000;
+    }
+    #coords {
+      font-size: 13px; color: rgba(255,255,255,0.9);
+      flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    #hint { font-size: 11px; color: rgba(255,255,255,0.6); }
+    #btn {
+      background: white; color: #1565c0; border: none;
+      padding: 10px 20px; border-radius: 20px; font-size: 14px;
+      font-weight: 700; cursor: pointer; letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3); white-space: nowrap;
+      opacity: 0.4; pointer-events: none;
+    }
+    #btn.active { opacity: 1; pointer-events: auto; }
+    .pin {
+      width: 28px; height: 28px; border-radius: 50% 50% 50% 0;
+      background: #e53935; border: 3px solid white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      transform: rotate(-45deg); margin-left: -14px; margin-top: -28px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="bar">
+    <div>
+      <div id="coords">Tap the map to select a location</div>
+      <div id="hint"></div>
+    </div>
+    <button id="btn" onclick="confirmSelection()">SELECT</button>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    var selectedLat = null;
+    var selectedLon = null;
+    var marker = null;
+
+    var map = L.map('map', { zoomControl: true }).setView([20, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap',
+      maxZoom: 19
+    }).addTo(map);
+
+    var pinIcon = L.divIcon({
+      className: '',
+      html: '<div class="pin"></div>',
+      iconSize: [28, 28],
+      iconAnchor: [14, 28]
+    });
+
+    map.on('click', function(e) {
+      selectedLat = e.latlng.lat;
+      selectedLon = e.latlng.lng;
+      var latStr = selectedLat.toFixed(6);
+      var lonStr = selectedLon.toFixed(6);
+      document.getElementById('coords').textContent = latStr + ',  ' + lonStr;
+      document.getElementById('hint').textContent = 'Tap SELECT to confirm';
+      document.getElementById('btn').classList.add('active');
+      if (marker) {
+        marker.setLatLng(e.latlng);
+      } else {
+        marker = L.marker(e.latlng, { icon: pinIcon }).addTo(map);
+      }
+    });
+
+    function confirmSelection() {
+      if (selectedLat !== null && selectedLon !== null) {
+        Android.onLocationSelected(selectedLat, selectedLon);
+      }
+    }
+
+    function setInitialLocation(lat, lon, zoom) {
+      map.setView([lat, lon], zoom || 10);
+      selectedLat = lat;
+      selectedLon = lon;
+      var latStr = lat.toFixed(6);
+      var lonStr = lon.toFixed(6);
+      document.getElementById('coords').textContent = latStr + ',  ' + lonStr;
+      document.getElementById('hint').textContent = 'Tap the map to change location';
+      document.getElementById('btn').classList.add('active');
+      marker = L.marker([lat, lon], { icon: pinIcon }).addTo(map);
+    }
+  </script>
+</body>
+</html>

@@ -56,6 +56,7 @@ data class EnvisionUiState(
     val landscapeProgress: Pair<Int, Int>? = null,
     val poiProgress: Pair<Int, Int>? = null,
     val fullFlowRunning: Boolean = false,
+    val pickedLocation: Pair<Double, Double>? = null,
 )
 
 @SuppressLint("MissingPermission")
@@ -564,6 +565,14 @@ class EnvisionViewModel : ViewModel() {
 
     private fun setLoading(loading: Boolean) {
         _uiState.value = _uiState.value.copy(isLoading = loading)
+    }
+
+    fun setPickedLocation(lat: Double, lon: Double) {
+        _uiState.value = _uiState.value.copy(pickedLocation = Pair(lat, lon))
+    }
+
+    fun clearPickedLocation() {
+        _uiState.value = _uiState.value.copy(pickedLocation = null)
     }
 
     override fun onCleared() {
