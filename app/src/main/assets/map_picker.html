@@ -43,7 +43,7 @@
   <script>
     console.log('map_picker: page script started');
 
-    /* Leaflet CSS — loaded dynamically to guarantee it applies after page render */
+    /* Leaflet CSS - loaded dynamically to guarantee it applies after page render */
     (function() {
       var link = document.createElement('link');
       link.rel = 'stylesheet';
@@ -60,9 +60,9 @@
     var pinIcon = null;
 
     function initMap() {
-      console.log('map_picker: initMap() called – Leaflet version ' + (typeof L !== 'undefined' ? L.version : 'UNDEFINED'));
+      console.log('map_picker: initMap() called - Leaflet version ' + (typeof L !== 'undefined' ? L.version : 'UNDEFINED'));
       if (typeof L === 'undefined') {
-        console.error('map_picker: L is undefined – Leaflet did not load!');
+        console.error('map_picker: L is undefined - Leaflet did not load!');
         document.getElementById('coords').textContent = 'ERROR: Leaflet library failed to load';
         return;
       }
@@ -138,7 +138,7 @@
     }
 
     /* Load Leaflet JS then initialise the map */
-    console.log('map_picker: appending Leaflet <script> tag');
+    console.log('map_picker: appending Leaflet script tag');
     var s = document.createElement('script');
     s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
     s.onload = function() {
@@ -148,10 +148,10 @@
     s.onerror = function() {
       console.error('map_picker: Leaflet JS FAILED to load (network error or blocked)');
       document.getElementById('map').style.background = '#222';
-      document.getElementById('coords').textContent = 'Map unavailable – Leaflet failed to load (check network)';
+      document.getElementById('coords').textContent = 'Map unavailable - Leaflet failed to load (check network)';
     };
     document.head.appendChild(s);
-    console.log('map_picker: Leaflet <script> tag appended, waiting for onload…');
+    console.log('map_picker: Leaflet script tag appended, waiting for onload...');
   </script>
 </body>
 </html>
