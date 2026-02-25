@@ -4,11 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Pick Location</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, Roboto, sans-serif; background: #121212; }
-    #map { width: 100%; height: calc(100vh - 64px); }
+    #map { width: 100%; height: calc(100vh - 64px); background: #aad3df; }
     #bar {
       position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
       background: #1565c0;
@@ -28,12 +27,7 @@
       opacity: 0.4; pointer-events: none;
     }
     #btn.active { opacity: 1; pointer-events: auto; }
-    .pin {
-      width: 28px; height: 28px; border-radius: 50% 50% 50% 0;
-      background: #e53935; border: 3px solid white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-      transform: rotate(-45deg); margin-left: -14px; margin-top: -28px;
-    }
+    /* leaflet styles injected by JS */
   </style>
 </head>
 <body>
@@ -45,40 +39,74 @@
     </div>
     <button id="btn" onclick="confirmSelection()">SELECT</button>
   </div>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <script>
+    /* Leaflet CSS — loaded dynamically to guarantee it applies after page render */
+    (function() {
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(link);
+    })();
+
     var selectedLat = null;
     var selectedLon = null;
     var marker = null;
+    var map = null;
 
-    var map = L.map('map', { zoomControl: true }).setView([20, 0], 2);
+    var pinIcon = null;
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap',
-      maxZoom: 19
-    }).addTo(map);
+    function initMap() {
+      pinIcon = L.divIcon({
+        className: '',
+        html: '<div style="width:28px;height:28px;border-radius:50% 50% 50% 0;background:#e53935;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.5);transform:rotate(-45deg);margin-left:-14px;margin-top:-28px;"></div>',
+        iconSize: [28, 28],
+        iconAnchor: [14, 28]
+      });
 
-    var pinIcon = L.divIcon({
-      className: '',
-      html: '<div class="pin"></div>',
-      iconSize: [28, 28],
-      iconAnchor: [14, 28]
-    });
+      var startLat = (typeof INITIAL_LAT !== 'undefined') ? INITIAL_LAT : 43.2686;
+      var startLon = (typeof INITIAL_LON !== 'undefined') ? INITIAL_LON : 5.3955;
 
-    map.on('click', function(e) {
-      selectedLat = e.latlng.lat;
-      selectedLon = e.latlng.lng;
-      var latStr = selectedLat.toFixed(6);
-      var lonStr = selectedLon.toFixed(6);
-      document.getElementById('coords').textContent = latStr + ',  ' + lonStr;
-      document.getElementById('hint').textContent = 'Tap SELECT to confirm';
+      map = L.map('map', { zoomControl: true }).setView([startLat, startLon], 10);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(map);
+
+      setInitialLocation(startLat, startLon, 10);
+
+      map.on('click', function(e) {
+        selectedLat = e.latlng.lat;
+        selectedLon = e.latlng.lng;
+        updateUI(selectedLat, selectedLon, 'Tap SELECT to confirm');
+        if (marker) {
+          marker.setLatLng(e.latlng);
+        } else {
+          marker = L.marker(e.latlng, { icon: pinIcon }).addTo(map);
+        }
+      });
+    }
+
+    function updateUI(lat, lon, hint) {
+      document.getElementById('coords').textContent = lat.toFixed(6) + ',  ' + lon.toFixed(6);
+      document.getElementById('hint').textContent = hint || '';
       document.getElementById('btn').classList.add('active');
-      if (marker) {
-        marker.setLatLng(e.latlng);
-      } else {
-        marker = L.marker(e.latlng, { icon: pinIcon }).addTo(map);
+    }
+
+    function setInitialLocation(lat, lon, zoom) {
+      selectedLat = lat;
+      selectedLon = lon;
+      updateUI(lat, lon, 'Tap the map to change location');
+      if (map) {
+        map.setView([lat, lon], zoom || 10);
+        if (marker) {
+          marker.setLatLng([lat, lon]);
+        } else if (pinIcon) {
+          marker = L.marker([lat, lon], { icon: pinIcon }).addTo(map);
+        }
       }
-    });
+    }
 
     function confirmSelection() {
       if (selectedLat !== null && selectedLon !== null) {
@@ -86,17 +114,15 @@
       }
     }
 
-    function setInitialLocation(lat, lon, zoom) {
-      map.setView([lat, lon], zoom || 10);
-      selectedLat = lat;
-      selectedLon = lon;
-      var latStr = lat.toFixed(6);
-      var lonStr = lon.toFixed(6);
-      document.getElementById('coords').textContent = latStr + ',  ' + lonStr;
-      document.getElementById('hint').textContent = 'Tap the map to change location';
-      document.getElementById('btn').classList.add('active');
-      marker = L.marker([lat, lon], { icon: pinIcon }).addTo(map);
-    }
+    /* Load Leaflet JS then initialise the map */
+    var s = document.createElement('script');
+    s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    s.onload = function() { initMap(); };
+    s.onerror = function() {
+      document.getElementById('map').style.background = '#222';
+      document.getElementById('coords').textContent = 'Map unavailable – check internet connection';
+    };
+    document.head.appendChild(s);
   </script>
 </body>
 </html>

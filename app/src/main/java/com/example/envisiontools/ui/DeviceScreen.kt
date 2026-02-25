@@ -184,10 +184,10 @@ private fun CommandsTab(
     val context = LocalContext.current
 
     // ----- Text-field state -----
-    var lat by remember { mutableStateOf("43.2965") }
-    var lon by remember { mutableStateOf("5.3698") }
-    var targetX by remember { mutableStateOf("180.0") }
-    var targetY by remember { mutableStateOf("45.0") }
+    var lat by remember { mutableStateOf("43.2686") }
+    var lon by remember { mutableStateOf("5.3955") }
+    var targetX by remember { mutableStateOf("80.0") }
+    var targetY by remember { mutableStateOf("5.0") }
     var gpsError by remember { mutableStateOf<String?>(null) }
 
     // ----- File-picker state -----
@@ -323,8 +323,8 @@ private fun CommandsTab(
             // Open map picker
             OutlinedButton(
                 onClick = {
-                    val latD = lat.toDoubleOrNull() ?: 43.2965
-                    val lonD = lon.toDoubleOrNull() ?: 5.3698
+                    val latD = lat.toDoubleOrNull() ?: 43.2686
+                    val lonD = lon.toDoubleOrNull() ?: 5.3955
                     onPickFromMap(latD, lonD)
                 },
                 modifier = Modifier.weight(1f)
