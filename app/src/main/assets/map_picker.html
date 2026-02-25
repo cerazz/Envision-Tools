@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pick Location</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; font-family: -apple-system, Roboto, sans-serif; background: #121212; }
+    #map { position: fixed; top: 0; left: 0; right: 0; bottom: 64px; background: #aad3df; }
+    #bar {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
+      background: #1565c0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 16px; gap: 12px; z-index: 1000;
+    }
+    #coords {
+      font-size: 13px; color: rgba(255,255,255,0.9);
+      flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    #hint { font-size: 11px; color: rgba(255,255,255,0.6); }
+    #btn {
+      background: white; color: #1565c0; border: none;
+      padding: 10px 20px; border-radius: 20px; font-size: 14px;
+      font-weight: 700; cursor: pointer; letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3); white-space: nowrap;
+      opacity: 0.4; pointer-events: none;
+    }
+    #btn.active { opacity: 1; pointer-events: auto; }
+    /* leaflet styles injected by JS */
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="bar">
+    <div>
+      <div id="coords">Tap the map to select a location</div>
+      <div id="hint"></div>
+    </div>
+    <button id="btn" onclick="confirmSelection()">SELECT</button>
+  </div>
+
+  <script>
+    console.log('map_picker: page script started');
+
+    /* Leaflet CSS - loaded dynamically to guarantee it applies after page render */
+    (function() {
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(link);
+      console.log('map_picker: Leaflet CSS link appended');
+    })();
+
+    var selectedLat = null;
+    var selectedLon = null;
+    var marker = null;
+    var map = null;
+
+    var pinIcon = null;
+
+    function initMap() {
+      console.log('map_picker: initMap() called - Leaflet version ' + (typeof L !== 'undefined' ? L.version : 'UNDEFINED'));
+      if (typeof L === 'undefined') {
+        console.error('map_picker: L is undefined - Leaflet did not load!');
+        document.getElementById('coords').textContent = 'ERROR: Leaflet library failed to load';
+        return;
+      }
+      try {
+        pinIcon = L.divIcon({
+          className: '',
+          html: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="40" viewBox="0 0 28 40">'
+              + '<path d="M14 0C6.3 0 0 6.3 0 14c0 10.5 14 26 14 26S28 24.5 28 14C28 6.3 21.7 0 14 0z" fill="#e53935" stroke="white" stroke-width="2"/>'
+              + '<circle cx="14" cy="13" r="5" fill="white"/>'
+              + '</svg>',
+          iconSize: [28, 40],
+          iconAnchor: [14, 40]
+        });
+
+        var startLat = (typeof INITIAL_LAT !== 'undefined') ? INITIAL_LAT : 43.2686;
+        var startLon = (typeof INITIAL_LON !== 'undefined') ? INITIAL_LON : 5.3955;
+        console.log('map_picker: startLat=' + startLat + ' startLon=' + startLon + ' (INITIAL_LAT defined=' + (typeof INITIAL_LAT !== 'undefined') + ')');
+
+        var mapDiv = document.getElementById('map');
+        /* Belt-and-suspenders: Android WebView can report offsetHeight=0 even with
+           CSS layout. Force an explicit pixel height before Leaflet initialises. */
+        var mapH = mapDiv.offsetHeight || (window.innerHeight - 64);
+        mapDiv.style.height = mapH + 'px';
+        console.log('map_picker: #map div found=' + !!mapDiv + ' offsetWidth=' + (mapDiv ? mapDiv.offsetWidth : 'N/A') + ' offsetHeight=' + mapH);
+
+        map = L.map('map', { zoomControl: true }).setView([startLat, startLon], 10);
+        map.invalidateSize();
+        console.log('map_picker: L.map created successfully');
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors',
+          maxZoom: 19
+        }).addTo(map);
+        console.log('map_picker: tileLayer added');
+
+        setInitialLocation(startLat, startLon, 10);
+
+        map.on('click', function(e) {
+          selectedLat = e.latlng.lat;
+          selectedLon = e.latlng.lng;
+          console.log('map_picker: map clicked lat=' + selectedLat + ' lon=' + selectedLon);
+          updateUI(selectedLat, selectedLon, 'Tap SELECT to confirm');
+          if (marker) {
+            marker.setLatLng(e.latlng);
+          } else {
+            marker = L.marker(e.latlng, { icon: pinIcon }).addTo(map);
+          }
+        });
+        console.log('map_picker: initMap() completed successfully');
+      } catch (err) {
+        console.error('map_picker: initMap() threw an error: ' + err);
+        document.getElementById('coords').textContent = 'Map init error: ' + err;
+      }
+    }
+
+    function updateUI(lat, lon, hint) {
+      document.getElementById('coords').textContent = lat.toFixed(6) + ',  ' + lon.toFixed(6);
+      document.getElementById('hint').textContent = hint || '';
+      document.getElementById('btn').classList.add('active');
+    }
+
+    function setInitialLocation(lat, lon, zoom) {
+      selectedLat = lat;
+      selectedLon = lon;
+      updateUI(lat, lon, 'Tap the map to change location');
+      if (map) {
+        map.setView([lat, lon], zoom || 10);
+        if (marker) {
+          marker.setLatLng([lat, lon]);
+        } else if (pinIcon) {
+          marker = L.marker([lat, lon], { icon: pinIcon }).addTo(map);
+        }
+      }
+    }
+
+    function confirmSelection() {
+      if (selectedLat !== null && selectedLon !== null) {
+        console.log('map_picker: confirmSelection lat=' + selectedLat + ' lon=' + selectedLon);
+        Android.onLocationSelected(selectedLat, selectedLon);
+      }
+    }
+
+    /* Load Leaflet JS then initialise the map */
+    console.log('map_picker: appending Leaflet script tag');
+    var s = document.createElement('script');
+    s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    s.onload = function() {
+      console.log('map_picker: Leaflet JS loaded successfully, calling initMap()');
+      initMap();
+    };
+    s.onerror = function() {
+      console.error('map_picker: Leaflet JS FAILED to load (network error or blocked)');
+      document.getElementById('map').style.background = '#222';
+      document.getElementById('coords').textContent = 'Map unavailable - Leaflet failed to load (check network)';
+    };
+    document.head.appendChild(s);
+    console.log('map_picker: Leaflet script tag appended, waiting for onload...');
+  </script>
+</body>
+</html>

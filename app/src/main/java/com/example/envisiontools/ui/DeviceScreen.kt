@@ -1,6 +1,10 @@
 package com.example.envisiontools.ui
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.location.LocationManager
 import android.net.Uri
+import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -17,23 +21,30 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.GpsFixed
+import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.WifiOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -44,46 +55,93 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.envisiontools.ble.EnvisionProtocol
+import com.example.envisiontools.viewmodel.ConnectionState
 import com.example.envisiontools.viewmodel.EnvisionViewModel
 
+/** Resolve a content URI to its human-readable display name. */
+private fun getDisplayName(context: Context, uri: Uri): String {
+    context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+        if (cursor.moveToFirst()) {
+            val idx = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (idx >= 0) {
+                val name = cursor.getString(idx)
+                if (!name.isNullOrBlank()) return name
+            }
+        }
+    }
+    return uri.lastPathSegment ?: "file.json"
+}
+
 @Composable
-fun DeviceScreen(viewModel: EnvisionViewModel, modifier: Modifier = Modifier) {
+fun DeviceScreen(
+    viewModel: EnvisionViewModel,
+    onConnectClick: () -> Unit = {},
+    onPickFromMap: (Double, Double) -> Unit = { _, _ -> },
+    modifier: Modifier = Modifier
+) {
     val uiState by viewModel.uiState.collectAsState()
+    val isConnected = uiState.connectionState == ConnectionState.CONNECTED
+    val isConnecting = uiState.connectionState == ConnectionState.CONNECTING
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf("Commands", "Files")
 
     Column(modifier = modifier.fillMaxSize()) {
-        // Status bar
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+        // ── Status bar ──────────────────────────────────────────────
+        Surface(
+            tonalElevation = 4.dp,
+            color = if (isConnected) MaterialTheme.colorScheme.primaryContainer
+                    else MaterialTheme.colorScheme.surfaceVariant
         ) {
-            Column {
-                Text(
-                    text = "Connected",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Text(
-                    text = uiState.statusMessage,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                if (uiState.isLoading) CircularProgressIndicator()
-                OutlinedButton(
-                    onClick = { viewModel.disconnect() },
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(
+                        text = if (isConnected) "Connected"
+                               else if (isConnecting) "Connecting…"
+                               else "Not Connected",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = if (isConnected) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontWeight = FontWeight.Bold
                     )
+                    if (uiState.statusMessage.isNotBlank()) {
+                        Text(
+                            text = uiState.statusMessage,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("Disconnect")
+                    if (isConnecting) CircularProgressIndicator()
+                    if (isConnected) {
+                        OutlinedButton(
+                            onClick = { viewModel.disconnect() },
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = MaterialTheme.colorScheme.error
+                            )
+                        ) { Text("Disconnect") }
+                    } else if (!isConnecting) {
+                        Button(onClick = onConnectClick) {
+                            Icon(
+                                imageVector = Icons.Default.WifiOff,
+                                contentDescription = null,
+                                modifier = Modifier.padding(end = 6.dp)
+                            )
+                            Text("Scan for Device")
+                        }
+                    }
                 }
             }
         }
@@ -101,22 +159,40 @@ fun DeviceScreen(viewModel: EnvisionViewModel, modifier: Modifier = Modifier) {
         }
 
         when (selectedTab) {
-            0 -> CommandsTab(viewModel = viewModel, modifier = Modifier.fillMaxSize())
-            1 -> FilesTab(viewModel = viewModel, modifier = Modifier.fillMaxSize())
+            0 -> CommandsTab(
+                viewModel = viewModel,
+                isConnected = isConnected,
+                onPickFromMap = onPickFromMap,
+                modifier = Modifier.fillMaxSize()
+            )
+            1 -> FilesTab(
+                viewModel = viewModel,
+                isConnected = isConnected,
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 }
 
+@SuppressLint("MissingPermission")
 @Composable
-private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modifier) {
+private fun CommandsTab(
+    viewModel: EnvisionViewModel,
+    isConnected: Boolean,
+    onPickFromMap: (Double, Double) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
     // ----- Text-field state -----
-    var lat by remember { mutableStateOf("43.2965") }
-    var lon by remember { mutableStateOf("5.3698") }
-    var targetX by remember { mutableStateOf("180.0") }
-    var targetY by remember { mutableStateOf("45.0") }
+    var lat by remember { mutableStateOf("43.2686") }
+    var lon by remember { mutableStateOf("5.3955") }
+    var targetX by remember { mutableStateOf("80.0") }
+    var targetY by remember { mutableStateOf("5.0") }
+    var gpsError by remember { mutableStateOf<String?>(null) }
+    var azError by remember { mutableStateOf<String?>(null) }
+    var altError by remember { mutableStateOf<String?>(null) }
 
     // ----- File-picker state -----
     var landscapeUri by remember { mutableStateOf<Uri?>(null) }
@@ -129,7 +205,7 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
     ) { uri ->
         if (uri != null) {
             landscapeUri = uri
-            landscapeFileName = uri.lastPathSegment ?: "landscape.json"
+            landscapeFileName = getDisplayName(context, uri)
         }
     }
 
@@ -138,18 +214,43 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
     ) { uri ->
         if (uri != null) {
             poiUri = uri
-            poiFileName = uri.lastPathSegment ?: "poi.json"
+            poiFileName = getDisplayName(context, uri)
+        }
+    }
+
+    // Apply picked location from map picker
+    LaunchedEffect(uiState.pickedLocation) {
+        uiState.pickedLocation?.let { (pickedLat, pickedLon) ->
+            lat = "%.6f".format(pickedLat)
+            lon = "%.6f".format(pickedLon)
+            viewModel.clearPickedLocation()
         }
     }
 
     val isBusy = uiState.isLoading || uiState.fullFlowRunning
+    val canSend = isConnected && !isBusy
 
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        if (!isConnected) {
+            ElevatedCard(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = MaterialTheme.colorScheme.errorContainer
+                )
+            ) {
+                Text(
+                    text = "⚠ No device connected — commands are disabled.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    modifier = Modifier.padding(12.dp)
+                )
+            }
+        }
 
         // =========================================================
         // SECTION: Data & Sync
@@ -158,7 +259,7 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(
                 onClick = { viewModel.sendFlushCommand() },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary
@@ -166,7 +267,7 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
             ) { Text("Flush") }
             Button(
                 onClick = { viewModel.syncTime() },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Sync Time") }
         }
@@ -175,29 +276,90 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         // SECTION: GPS Position
         // =========================================================
         SectionHeader("GPS Position")
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             OutlinedTextField(
                 value = lat,
-                onValueChange = { lat = it },
+                onValueChange = { lat = it; gpsError = null },
                 label = { Text("Latitude") },
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.weight(1f)
             )
             OutlinedTextField(
                 value = lon,
-                onValueChange = { lon = it },
+                onValueChange = { lon = it; gpsError = null },
                 label = { Text("Longitude") },
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.weight(1f)
+            )
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            // Use current GPS location
+            OutlinedButton(
+                onClick = {
+                    gpsError = null
+                    try {
+                        val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                        val location =
+                            lm.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                                ?: lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                        if (location != null) {
+                            lat = "%.6f".format(location.latitude)
+                            lon = "%.6f".format(location.longitude)
+                        } else {
+                            gpsError = "Location unavailable. Enable GPS and try again."
+                        }
+                    } catch (e: SecurityException) {
+                        gpsError = "Location permission denied."
+                    }
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.GpsFixed,
+                    contentDescription = null,
+                    modifier = Modifier.padding(end = 6.dp)
+                )
+                Text("My Location")
+            }
+            // Open map picker
+            OutlinedButton(
+                onClick = {
+                    val latD = lat.toDoubleOrNull() ?: 43.2686
+                    val lonD = lon.toDoubleOrNull() ?: 5.3955
+                    onPickFromMap(latD, lonD)
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Map,
+                    contentDescription = null,
+                    modifier = Modifier.padding(end = 6.dp)
+                )
+                Text("Pick on Map")
+            }
+        }
+        if (gpsError != null) {
+            Text(
+                text = gpsError!!,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error
             )
         }
         Button(
             onClick = {
                 val latF = lat.toFloatOrNull() ?: return@Button
                 val lonF = lon.toFloatOrNull() ?: return@Button
+                // Normalise display: ensure a decimal point is visible
+                if (!lat.contains('.')) lat = "%.1f".format(latF)
+                if (!lon.contains('.')) lon = "%.1f".format(lonF)
                 viewModel.sendGpsPosition(latF, lonF)
             },
-            enabled = !isBusy,
+            enabled = canSend,
             modifier = Modifier.fillMaxWidth()
         ) { Text("Send Position") }
 
@@ -208,16 +370,38 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = targetX,
-                onValueChange = { targetX = it },
+                onValueChange = {
+                    targetX = it
+                    val v = it.toFloatOrNull()
+                    azError = when {
+                        v == null && it.isNotEmpty() -> "Enter a valid number"
+                        v != null && (v < 0f || v >= 360f) -> "Azimuth must be in [0, 360)"
+                        else -> null
+                    }
+                },
                 label = { Text("Azimuth (x)") },
                 singleLine = true,
+                isError = azError != null,
+                supportingText = azError?.let { { Text(it, color = MaterialTheme.colorScheme.error) } },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.weight(1f)
             )
             OutlinedTextField(
                 value = targetY,
-                onValueChange = { targetY = it },
+                onValueChange = {
+                    targetY = it
+                    val v = it.toFloatOrNull()
+                    altError = when {
+                        v == null && it.isNotEmpty() -> "Enter a valid number"
+                        v != null && (v < -90f || v > 90f) -> "Altitude must be in [-90, +90]"
+                        else -> null
+                    }
+                },
                 label = { Text("Altitude (y)") },
                 singleLine = true,
+                isError = altError != null,
+                supportingText = altError?.let { { Text(it, color = MaterialTheme.colorScheme.error) } },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.weight(1f)
             )
         }
@@ -225,9 +409,14 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
             onClick = {
                 val xF = targetX.toFloatOrNull() ?: return@Button
                 val yF = targetY.toFloatOrNull() ?: return@Button
+                if (xF < 0f || xF >= 360f) return@Button
+                if (yF < -90f || yF > 90f) return@Button
+                // Normalise display
+                if (!targetX.contains('.')) targetX = "%.1f".format(xF)
+                if (!targetY.contains('.')) targetY = "%.1f".format(yF)
                 viewModel.sendTargetPosition(xF, yF)
             },
-            enabled = !isBusy,
+            enabled = canSend && azError == null && altError == null,
             modifier = Modifier.fillMaxWidth()
         ) { Text("Send Target") }
 
@@ -237,99 +426,125 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         SectionHeader("Landscape & POI")
 
         // Landscape
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlinedButton(
-                onClick = { landscapePicker.launch(arrayOf("application/json", "*/*")) },
-                modifier = Modifier.weight(1f)
-            ) { Text(if (landscapeFileName != null) "Landscape: $landscapeFileName" else "Pick Landscape File") }
-            Button(
-                onClick = { landscapeUri?.let { viewModel.loadAndSendLandscape(context, it) } },
-                enabled = !isBusy && landscapeUri != null
-            ) { Text("Send") }
-        }
-        OutlinedButton(
-            onClick = { viewModel.loadAndSendLandscapeFromAsset(context, "silouhette_Marseille.json") },
-            enabled = !isBusy,
-            modifier = Modifier.fillMaxWidth()
-        ) { Text("Example: Marseille Landscape") }
-        uiState.landscapeProgress?.let { (sent, total) ->
-            LinearProgressIndicator(
-                progress = { if (total > 0) sent.toFloat() / total else 0f },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Text(
-                text = "Lines: $sent / $total",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+        ElevatedCard(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Landscape", style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedButton(
+                        onClick = { landscapePicker.launch(arrayOf("application/json", "*/*")) },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = landscapeFileName ?: "Pick File…",
+                            maxLines = 1
+                        )
+                    }
+                    Button(
+                        onClick = { landscapeUri?.let { viewModel.loadAndSendLandscape(context, it) } },
+                        enabled = canSend && landscapeUri != null
+                    ) { Text("Send") }
+                }
+                OutlinedButton(
+                    onClick = { viewModel.loadAndSendLandscapeFromAsset(context, "silouhette_Marseille.json") },
+                    enabled = canSend,
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text("Example: Marseille") }
+                uiState.landscapeProgress?.let { (sent, total) ->
+                    LinearProgressIndicator(
+                        progress = { if (total > 0) sent.toFloat() / total else 0f },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        text = "Lines: $sent / $total",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
         }
 
         // POI
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlinedButton(
-                onClick = { poiPicker.launch(arrayOf("application/json", "*/*")) },
-                modifier = Modifier.weight(1f)
-            ) { Text(if (poiFileName != null) "POI: $poiFileName" else "Pick POI File") }
-            Button(
-                onClick = { poiUri?.let { viewModel.loadAndSendPoi(context, it) } },
-                enabled = !isBusy && poiUri != null
-            ) { Text("Send") }
-        }
-        OutlinedButton(
-            onClick = { viewModel.loadAndSendPoiFromAsset(context, "poi_marseille.json") },
-            enabled = !isBusy,
-            modifier = Modifier.fillMaxWidth()
-        ) { Text("Example: Marseille POI") }
-        uiState.poiProgress?.let { (sent, total) ->
-            LinearProgressIndicator(
-                progress = { if (total > 0) sent.toFloat() / total else 0f },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Text(
-                text = "POI: $sent / $total",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+        ElevatedCard(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Points of Interest (POI)", style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedButton(
+                        onClick = { poiPicker.launch(arrayOf("application/json", "*/*")) },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = poiFileName ?: "Pick File…",
+                            maxLines = 1
+                        )
+                    }
+                    Button(
+                        onClick = { poiUri?.let { viewModel.loadAndSendPoi(context, it) } },
+                        enabled = canSend && poiUri != null
+                    ) { Text("Send") }
+                }
+                OutlinedButton(
+                    onClick = { viewModel.loadAndSendPoiFromAsset(context, "poi_marseille.json") },
+                    enabled = canSend,
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text("Example: Marseille POI") }
+                uiState.poiProgress?.let { (sent, total) ->
+                    LinearProgressIndicator(
+                        progress = { if (total > 0) sent.toFloat() / total else 0f },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        text = "POI: $sent / $total",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
         }
 
         // =========================================================
         // SECTION: Full Flow
         // =========================================================
         SectionHeader("Full Initialisation Flow")
-        Text(
-            text = "Flush → Sync Time → Send Position → Landscape → POI",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Text(
-            text = "Uses lat/lon from GPS section and the files picked above.",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        if (uiState.fullFlowRunning) {
-            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+        ElevatedCard(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = "Flush → Sync Time → Send Position → Landscape → POI",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = "Uses lat/lon from GPS section and the files picked above.",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                if (uiState.fullFlowRunning) {
+                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                }
+                Button(
+                    onClick = {
+                        val latF = lat.toFloatOrNull() ?: return@Button
+                        val lonF = lon.toFloatOrNull() ?: return@Button
+                        viewModel.runFullFlow(latF, lonF, landscapeUri, poiUri, context)
+                    },
+                    enabled = canSend,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                ) { Text("Run Full Flow") }
+            }
         }
-        Button(
-            onClick = {
-                val latF = lat.toFloatOrNull() ?: return@Button
-                val lonF = lon.toFloatOrNull() ?: return@Button
-                viewModel.runFullFlow(latF, lonF, landscapeUri, poiUri, context)
-            },
-            enabled = !isBusy,
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        ) { Text("Run Full Flow") }
 
         // =========================================================
         // SECTION: Query Device
@@ -338,24 +553,24 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(
                 onClick = { viewModel.fetchBrightness() },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Brightness") }
             Button(
                 onClick = { viewModel.fetchUserConfig() },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Config") }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(
                 onClick = { viewModel.fetchCalibration() },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Calibration") }
             Button(
                 onClick = { viewModel.fetchWmmField() },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("WMM Field") }
         }
@@ -487,12 +702,12 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(
                 onClick = { viewModel.stageCommand(EnvisionProtocol.MSG_START_STAGE_ONE, "Stage 1 Start") },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Start") }
             OutlinedButton(
                 onClick = { viewModel.stageCommand(EnvisionProtocol.MSG_STOP_STAGE_ONE, "Stage 1 Stop") },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Stop") }
         }
@@ -501,12 +716,12 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(
                 onClick = { viewModel.stageCommand(EnvisionProtocol.MSG_START_STAGE_THREE, "Stage 3 Start") },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Start") }
             OutlinedButton(
                 onClick = { viewModel.stageCommand(EnvisionProtocol.MSG_STOP_STAGE_THREE, "Stage 3 Stop") },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Stop") }
         }
@@ -515,12 +730,12 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(
                 onClick = { viewModel.stageCommand(EnvisionProtocol.MSG_START_STAGE_FOUR, "Stage 4 Start") },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Start") }
             OutlinedButton(
                 onClick = { viewModel.stageCommand(EnvisionProtocol.MSG_STOP_STAGE_FOUR, "Stage 4 Stop") },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Stop") }
         }
@@ -529,12 +744,12 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(
                 onClick = { viewModel.stageCommand(EnvisionProtocol.MSG_START_STAGE_FIVE, "Stage 5 Start") },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Start") }
             OutlinedButton(
                 onClick = { viewModel.stageCommand(EnvisionProtocol.MSG_STOP_STAGE_FIVE, "Stage 5 Stop") },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Stop") }
         }
@@ -543,12 +758,12 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(
                 onClick = { viewModel.stageCommand(EnvisionProtocol.MSG_START_STAGE_SIX, "Stage 6 Start") },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Start") }
             OutlinedButton(
                 onClick = { viewModel.stageCommand(EnvisionProtocol.MSG_STOP_STAGE_SIX, "Stage 6 Stop") },
-                enabled = !isBusy,
+                enabled = canSend,
                 modifier = Modifier.weight(1f)
             ) { Text("Stop") }
         }
@@ -559,7 +774,7 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         SectionHeader("Maintenance")
         Button(
             onClick = { viewModel.doFormatPartition() },
-            enabled = !isBusy,
+            enabled = canSend,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.error
             ),
@@ -567,11 +782,17 @@ private fun CommandsTab(viewModel: EnvisionViewModel, modifier: Modifier = Modif
         ) {
             Text("Format Partition")
         }
+
+        Spacer(Modifier.height(16.dp))
     }
 }
 
 @Composable
-private fun FilesTab(viewModel: EnvisionViewModel, modifier: Modifier = Modifier) {
+private fun FilesTab(
+    viewModel: EnvisionViewModel,
+    isConnected: Boolean,
+    modifier: Modifier = Modifier
+) {
     val uiState by viewModel.uiState.collectAsState()
     val fileList = uiState.fileList
     val currentPath = uiState.currentFilePath
@@ -588,14 +809,23 @@ private fun FilesTab(viewModel: EnvisionViewModel, modifier: Modifier = Modifier
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.weight(1f)
             )
-            Button(onClick = { viewModel.listFiles(currentPath) }) {
+            Button(
+                onClick = { viewModel.listFiles(currentPath) },
+                enabled = isConnected
+            ) {
                 Text("Refresh")
             }
         }
 
         HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
-        if (fileList == null) {
+        if (!isConnected) {
+            Text(
+                text = "Connect a device to browse files.",
+                modifier = Modifier.padding(top = 16.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        } else if (fileList == null) {
             Text(
                 text = "Tap Refresh to list files.",
                 modifier = Modifier.padding(top = 16.dp),
@@ -672,3 +902,4 @@ private fun SectionHeader(title: String) {
         modifier = Modifier.padding(top = 8.dp)
     )
 }
+
