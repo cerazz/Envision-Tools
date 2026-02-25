@@ -35,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -54,6 +55,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.envisiontools.ble.EnvisionProtocol
 import com.example.envisiontools.viewmodel.ConnectionState
@@ -189,6 +191,8 @@ private fun CommandsTab(
     var targetX by remember { mutableStateOf("80.0") }
     var targetY by remember { mutableStateOf("5.0") }
     var gpsError by remember { mutableStateOf<String?>(null) }
+    var azError by remember { mutableStateOf<String?>(null) }
+    var altError by remember { mutableStateOf<String?>(null) }
 
     // ----- File-picker state -----
     var landscapeUri by remember { mutableStateOf<Uri?>(null) }
@@ -281,6 +285,7 @@ private fun CommandsTab(
                 onValueChange = { lat = it; gpsError = null },
                 label = { Text("Latitude") },
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.weight(1f)
             )
             OutlinedTextField(
@@ -288,6 +293,7 @@ private fun CommandsTab(
                 onValueChange = { lon = it; gpsError = null },
                 label = { Text("Longitude") },
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.weight(1f)
             )
         }
@@ -348,6 +354,9 @@ private fun CommandsTab(
             onClick = {
                 val latF = lat.toFloatOrNull() ?: return@Button
                 val lonF = lon.toFloatOrNull() ?: return@Button
+                // Normalise display: ensure a decimal point is visible
+                if (!lat.contains('.')) lat = "%.1f".format(latF)
+                if (!lon.contains('.')) lon = "%.1f".format(lonF)
                 viewModel.sendGpsPosition(latF, lonF)
             },
             enabled = canSend,
@@ -361,16 +370,38 @@ private fun CommandsTab(
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = targetX,
-                onValueChange = { targetX = it },
+                onValueChange = {
+                    targetX = it
+                    val v = it.toFloatOrNull()
+                    azError = when {
+                        v == null && it.isNotEmpty() -> "Enter a valid number"
+                        v != null && (v < 0f || v >= 360f) -> "Azimuth must be in [0, 360)"
+                        else -> null
+                    }
+                },
                 label = { Text("Azimuth (x)") },
                 singleLine = true,
+                isError = azError != null,
+                supportingText = azError?.let { { Text(it, color = MaterialTheme.colorScheme.error) } },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.weight(1f)
             )
             OutlinedTextField(
                 value = targetY,
-                onValueChange = { targetY = it },
+                onValueChange = {
+                    targetY = it
+                    val v = it.toFloatOrNull()
+                    altError = when {
+                        v == null && it.isNotEmpty() -> "Enter a valid number"
+                        v != null && (v < -90f || v > 90f) -> "Altitude must be in [-90, +90]"
+                        else -> null
+                    }
+                },
                 label = { Text("Altitude (y)") },
                 singleLine = true,
+                isError = altError != null,
+                supportingText = altError?.let { { Text(it, color = MaterialTheme.colorScheme.error) } },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.weight(1f)
             )
         }
@@ -378,9 +409,14 @@ private fun CommandsTab(
             onClick = {
                 val xF = targetX.toFloatOrNull() ?: return@Button
                 val yF = targetY.toFloatOrNull() ?: return@Button
+                if (xF < 0f || xF >= 360f) return@Button
+                if (yF < -90f || yF > 90f) return@Button
+                // Normalise display
+                if (!targetX.contains('.')) targetX = "%.1f".format(xF)
+                if (!targetY.contains('.')) targetY = "%.1f".format(yF)
                 viewModel.sendTargetPosition(xF, yF)
             },
-            enabled = canSend,
+            enabled = canSend && azError == null && altError == null,
             modifier = Modifier.fillMaxWidth()
         ) { Text("Send Target") }
 

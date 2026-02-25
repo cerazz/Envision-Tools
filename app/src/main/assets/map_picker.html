@@ -69,9 +69,12 @@
       try {
         pinIcon = L.divIcon({
           className: '',
-          html: '<div style="width:28px;height:28px;border-radius:50% 50% 50% 0;background:#e53935;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.5);transform:rotate(-45deg);margin-left:-14px;margin-top:-28px;"></div>',
-          iconSize: [28, 28],
-          iconAnchor: [14, 28]
+          html: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="40" viewBox="0 0 28 40">'
+              + '<path d="M14 0C6.3 0 0 6.3 0 14c0 10.5 14 26 14 26S28 24.5 28 14C28 6.3 21.7 0 14 0z" fill="#e53935" stroke="white" stroke-width="2"/>'
+              + '<circle cx="14" cy="13" r="5" fill="white"/>'
+              + '</svg>',
+          iconSize: [28, 40],
+          iconAnchor: [14, 40]
         });
 
         var startLat = (typeof INITIAL_LAT !== 'undefined') ? INITIAL_LAT : 43.2686;
