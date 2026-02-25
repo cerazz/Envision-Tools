@@ -6,8 +6,8 @@
   <title>Pick Location</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, Roboto, sans-serif; background: #121212; }
-    #map { width: 100%; height: calc(100vh - 64px); background: #aad3df; }
+    html, body { height: 100%; width: 100%; overflow: hidden; font-family: -apple-system, Roboto, sans-serif; background: #121212; }
+    #map { position: absolute; top: 0; left: 0; right: 0; bottom: 64px; background: #aad3df; }
     #bar {
       position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
       background: #1565c0;
@@ -82,6 +82,7 @@
         console.log('map_picker: #map div found=' + !!mapDiv + ' offsetWidth=' + (mapDiv ? mapDiv.offsetWidth : 'N/A') + ' offsetHeight=' + (mapDiv ? mapDiv.offsetHeight : 'N/A'));
 
         map = L.map('map', { zoomControl: true }).setView([startLat, startLon], 10);
+        map.invalidateSize();
         console.log('map_picker: L.map created successfully');
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
