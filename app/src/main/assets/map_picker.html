@@ -41,12 +41,15 @@
   </div>
 
   <script>
+    console.log('map_picker: page script started');
+
     /* Leaflet CSS — loaded dynamically to guarantee it applies after page render */
     (function() {
       var link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
       document.head.appendChild(link);
+      console.log('map_picker: Leaflet CSS link appended');
     })();
 
     var selectedLat = null;
@@ -57,35 +60,54 @@
     var pinIcon = null;
 
     function initMap() {
-      pinIcon = L.divIcon({
-        className: '',
-        html: '<div style="width:28px;height:28px;border-radius:50% 50% 50% 0;background:#e53935;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.5);transform:rotate(-45deg);margin-left:-14px;margin-top:-28px;"></div>',
-        iconSize: [28, 28],
-        iconAnchor: [14, 28]
-      });
+      console.log('map_picker: initMap() called – Leaflet version ' + (typeof L !== 'undefined' ? L.version : 'UNDEFINED'));
+      if (typeof L === 'undefined') {
+        console.error('map_picker: L is undefined – Leaflet did not load!');
+        document.getElementById('coords').textContent = 'ERROR: Leaflet library failed to load';
+        return;
+      }
+      try {
+        pinIcon = L.divIcon({
+          className: '',
+          html: '<div style="width:28px;height:28px;border-radius:50% 50% 50% 0;background:#e53935;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.5);transform:rotate(-45deg);margin-left:-14px;margin-top:-28px;"></div>',
+          iconSize: [28, 28],
+          iconAnchor: [14, 28]
+        });
 
-      var startLat = (typeof INITIAL_LAT !== 'undefined') ? INITIAL_LAT : 43.2686;
-      var startLon = (typeof INITIAL_LON !== 'undefined') ? INITIAL_LON : 5.3955;
+        var startLat = (typeof INITIAL_LAT !== 'undefined') ? INITIAL_LAT : 43.2686;
+        var startLon = (typeof INITIAL_LON !== 'undefined') ? INITIAL_LON : 5.3955;
+        console.log('map_picker: startLat=' + startLat + ' startLon=' + startLon + ' (INITIAL_LAT defined=' + (typeof INITIAL_LAT !== 'undefined') + ')');
 
-      map = L.map('map', { zoomControl: true }).setView([startLat, startLon], 10);
+        var mapDiv = document.getElementById('map');
+        console.log('map_picker: #map div found=' + !!mapDiv + ' offsetWidth=' + (mapDiv ? mapDiv.offsetWidth : 'N/A') + ' offsetHeight=' + (mapDiv ? mapDiv.offsetHeight : 'N/A'));
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors',
-        maxZoom: 19
-      }).addTo(map);
+        map = L.map('map', { zoomControl: true }).setView([startLat, startLon], 10);
+        console.log('map_picker: L.map created successfully');
 
-      setInitialLocation(startLat, startLon, 10);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors',
+          maxZoom: 19
+        }).addTo(map);
+        console.log('map_picker: tileLayer added');
 
-      map.on('click', function(e) {
-        selectedLat = e.latlng.lat;
-        selectedLon = e.latlng.lng;
-        updateUI(selectedLat, selectedLon, 'Tap SELECT to confirm');
-        if (marker) {
-          marker.setLatLng(e.latlng);
-        } else {
-          marker = L.marker(e.latlng, { icon: pinIcon }).addTo(map);
-        }
-      });
+        setInitialLocation(startLat, startLon, 10);
+
+        map.on('click', function(e) {
+          selectedLat = e.latlng.lat;
+          selectedLon = e.latlng.lng;
+          console.log('map_picker: map clicked lat=' + selectedLat + ' lon=' + selectedLon);
+          updateUI(selectedLat, selectedLon, 'Tap SELECT to confirm');
+          if (marker) {
+            marker.setLatLng(e.latlng);
+          } else {
+            marker = L.marker(e.latlng, { icon: pinIcon }).addTo(map);
+          }
+        });
+        console.log('map_picker: initMap() completed successfully');
+      } catch (err) {
+        console.error('map_picker: initMap() threw an error: ' + err);
+        document.getElementById('coords').textContent = 'Map init error: ' + err;
+      }
     }
 
     function updateUI(lat, lon, hint) {
@@ -110,19 +132,26 @@
 
     function confirmSelection() {
       if (selectedLat !== null && selectedLon !== null) {
+        console.log('map_picker: confirmSelection lat=' + selectedLat + ' lon=' + selectedLon);
         Android.onLocationSelected(selectedLat, selectedLon);
       }
     }
 
     /* Load Leaflet JS then initialise the map */
+    console.log('map_picker: appending Leaflet <script> tag');
     var s = document.createElement('script');
     s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-    s.onload = function() { initMap(); };
+    s.onload = function() {
+      console.log('map_picker: Leaflet JS loaded successfully, calling initMap()');
+      initMap();
+    };
     s.onerror = function() {
+      console.error('map_picker: Leaflet JS FAILED to load (network error or blocked)');
       document.getElementById('map').style.background = '#222';
-      document.getElementById('coords').textContent = 'Map unavailable – check internet connection';
+      document.getElementById('coords').textContent = 'Map unavailable – Leaflet failed to load (check network)';
     };
     document.head.appendChild(s);
+    console.log('map_picker: Leaflet <script> tag appended, waiting for onload…');
   </script>
 </body>
 </html>
