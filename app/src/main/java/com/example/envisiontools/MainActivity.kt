@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -58,8 +59,10 @@ class MainActivity : ComponentActivity() {
                         composable("scan") {
                             ScanScreen(viewModel = vm)
                             // Auto-navigate back when connected
-                            if (uiState.connectionState == ConnectionState.CONNECTED) {
-                                navController.popBackStack()
+                            LaunchedEffect(uiState.connectionState) {
+                                if (uiState.connectionState == ConnectionState.CONNECTED) {
+                                    navController.popBackStack()
+                                }
                             }
                         }
                         composable("map_picker/{lat}/{lon}") { backStackEntry ->
